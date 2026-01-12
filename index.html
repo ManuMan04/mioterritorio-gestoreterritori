@@ -185,18 +185,15 @@
 
                                     <!-- Top Right Actions: Expiration + Delete -->
                                     <div class="flex items-center gap-1" @click.stop>
-                                        <!-- Expiration Date -->
-                                        <div class="relative" x-data="{ open: false }">
-                                            <button @click="open = !open"
-                                                class="h-8 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-jw-600 transition-colors flex items-center gap-1 text-[10px] font-medium border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
+                                        <!-- Expiration Date (Native Picker Override) -->
+                                        <div
+                                            class="relative h-8 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
+                                            <input type="date" x-model="t.expiration"
+                                                class="absolute inset-0 opacity-0 w-full h-full z-10 cursor-pointer">
+                                            <div class="flex items-center gap-1 h-full px-2 text-[10px] font-medium text-gray-400"
+                                                :class="{'text-jw-600 dark:text-jw-400': t.expiration}">
                                                 <i class="far fa-calendar-alt text-sm"></i>
                                                 <span x-show="t.expiration" x-text="formatDate(t.expiration)"></span>
-                                            </button>
-                                            <!-- Date Input Popup -->
-                                            <div x-show="open" @click.outside="open = false"
-                                                class="absolute right-0 top-full mt-1 bg-white dark:bg-gray-800 p-2 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 z-50">
-                                                <input type="date" x-model="t.expiration"
-                                                    class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-xs text-gray-700 dark:text-gray-200 outline-none focus:border-jw-500">
                                             </div>
                                         </div>
 
@@ -291,18 +288,16 @@
                         </button>
                     </div>
 
-                    <!-- Expiration Date (Detail View) -->
-                    <div class="relative" x-data="{ open: false }">
-                        <button @click="open = !open"
-                            class="h-8 px-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-jw-600 transition-colors flex items-center gap-1 text-[10px] font-medium border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
+                    <!-- Expiration Date (Detail View - Native Picker) -->
+                    <div
+                        class="relative h-8 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
+                        <input type="date" x-model="activeTerritory.expiration"
+                            class="absolute inset-0 opacity-0 w-full h-full z-10 cursor-pointer">
+                        <div class="flex items-center gap-1 h-full px-2 text-[10px] font-medium text-gray-400"
+                            :class="{'text-jw-600 dark:text-jw-400': activeTerritory.expiration}">
                             <i class="far fa-calendar-alt text-lg"></i>
                             <span x-show="activeTerritory && activeTerritory.expiration"
                                 x-text="formatDateShort(activeTerritory?.expiration)"></span>
-                        </button>
-                        <div x-show="open" @click.outside="open = false"
-                            class="absolute right-0 top-full mt-1 bg-white dark:bg-gray-800 p-2 rounded-xl shadow-xl border border-gray-100 dark:border-gray-700 z-50">
-                            <input type="date" x-model="activeTerritory.expiration"
-                                class="bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-1 text-xs text-gray-700 dark:text-gray-200 outline-none focus:border-jw-500">
                         </div>
                     </div>
                 </header>
@@ -588,7 +583,7 @@
                     if (!el || this.view !== 'dashboard') return;
                     if (this.sortableTerritories) this.sortableTerritories.destroy();
                     this.sortableTerritories = new Sortable(el.querySelector('.grid'), {
-                        draggable: '.group', animation: 150, ghostClass: 'sortable-ghost', delay: 150, delayOnTouchOnly: true,
+                        draggable: '.group', animation: 150, ghostClass: 'sortable-ghost', delay: 1000, delayOnTouchOnly: true,
                         onEnd: (evt) => {
                             if (evt.oldIndex === undefined || evt.newIndex === undefined) return;
                             if (evt.oldIndex === evt.newIndex) return;
@@ -604,7 +599,7 @@
                     if (!el || this.view !== 'editor') return;
                     if (this.sortableAddresses) this.sortableAddresses.destroy();
                     this.sortableAddresses = new Sortable(el.querySelector('.space-y-4'), {
-                        draggable: '.group', animation: 150, ghostClass: 'sortable-ghost', delay: 150, delayOnTouchOnly: true,
+                        draggable: '.group', animation: 150, ghostClass: 'sortable-ghost', delay: 1000, delayOnTouchOnly: true,
                         onEnd: (evt) => {
                             if (evt.oldIndex === undefined || evt.newIndex === undefined) return;
                             if (evt.oldIndex === evt.newIndex) return;
