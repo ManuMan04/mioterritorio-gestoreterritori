@@ -245,9 +245,9 @@
                     <!-- Addresses List -->
                     <div class="space-y-4" id="address-list" x-ref="addressList">
                         <template x-for="(addr, addrIdx) in activeTerritory ? activeTerritory.addresses : []"
-                            :key="addr ? addr.id : 'ghost'">
+                            :key="addr.id">
                             <div x-show="addr" x-data="{ expanded: true }"
-                                class="group bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 animate-slide-up overflow-hidden select-none touch-manipulation"
+                                class="group bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden select-none touch-manipulation"
                                 style="-webkit-touch-callout: none;">
 
                                 <!-- Address Header -->
