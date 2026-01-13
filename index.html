@@ -150,8 +150,8 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <template x-for="t in territories" :key="t ? t.id : Math.random()">
                             <div x-show="t"
-                                class="group active:scale-[0.98] bg-white dark:bg-gray-900 rounded-2xl p-4 border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-all cursor-pointer relative overflow-hidden flex flex-col gap-3"
-                                @click="openTerritory(t.id)">
+                                class="group active:scale-[0.98] bg-white dark:bg-gray-900 rounded-2xl p-4 border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-all cursor-pointer relative overflow-hidden flex flex-col gap-3 select-none touch-manipulation"
+                                style="-webkit-touch-callout: none;" @click="openTerritory(t.id)">
 
                                 <!-- Top Row: Name + Actions -->
                                 <div class="flex items-start justify-between">
@@ -337,7 +337,8 @@
                         <template x-for="(addr, addrIdx) in activeTerritory ? activeTerritory.addresses : []"
                             :key="addr ? addr.id : 'ghost'">
                             <div x-show="addr" x-data="{ expanded: true }"
-                                class="group bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 animate-slide-up overflow-hidden">
+                                class="group bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 animate-slide-up overflow-hidden select-none touch-manipulation"
+                                style="-webkit-touch-callout: none;">
 
                                 <!-- Address Header -->
                                 <div class="p-4 md:px-6 flex items-center justify-between gap-3 cursor-move bg-white dark:bg-gray-900 transition-colors"
