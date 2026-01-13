@@ -184,11 +184,11 @@
                                     </div>
 
                                     <!-- Top Right Actions: Expiration + Delete -->
-                                    <div class="flex items-center gap-1" @click.stop>
+                                    <div class="flex items-center gap-1 flex-shrink-0" @click.stop>
                                         <!-- Expiration Date (Native Picker Override) -->
                                         <div
-                                            class="relative h-8 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700 w-[100px]">
-                                            <!-- Fixed width and z-index to not overlap delete button -->
+                                            class="relative h-8 min-w-[32px] bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
+                                            <!-- Hidden input strictly within container -->
                                             <input type="date" x-model="t.expiration"
                                                 class="absolute inset-0 opacity-0 w-full h-full z-10 cursor-pointer">
                                             <div class="flex items-center gap-1 h-full px-2 text-[10px] font-medium text-gray-400"
@@ -249,15 +249,12 @@
                     </div>
 
                     <!-- Footer -->
-                    <!-- Footer -->
                     <footer
                         class="py-12 text-center text-gray-400 dark:text-gray-500 text-[10px] md:text-xs opacity-70">
-                        <p class="max-w-[80%] mx-auto leading-relaxed font-medium mb-4">
-                            Questo sito non invia dati a nessun server.<br>
-                            Tutte le informazioni rimangono esclusivamente<br>sul tuo dispositivo (Client-side only).
-                        </p>
-                        <p class="max-w-[80%] mx-auto leading-relaxed font-bold text-red-400 dark:text-red-900/60 mb-6">
-                            ⚠️ ATTENZIONE: Eliminando la cache del browser<br>si perderanno tutti i dati salvati!
+                        <p class="max-w-[85%] mx-auto leading-relaxed font-medium mb-6">
+                            Client-side only: i dati sono salvati solo sul dispositivo.<br>
+                            <span class="text-red-400/80 dark:text-red-900/50">Svuotando la cache del browser i dati
+                                verranno persi.</span>
                         </p>
                         <div class="flex justify-center">
                             <a href="https://github.com/ManuMan04/gestore-territori-jw" target="_blank"
@@ -296,10 +293,10 @@
 
                     <!-- Expiration Date (Detail View - Native Picker) -->
                     <div
-                        class="relative h-8 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
+                        class="relative h-8 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700 flex-shrink-0">
                         <input type="date" x-model="activeTerritory.expiration"
                             class="absolute inset-0 opacity-0 w-full h-full z-10 cursor-pointer">
-                        <div class="flex items-center gap-1 h-full px-2 text-[10px] font-medium text-gray-400"
+                        <div class="flex items-center gap-1 h-full px-2 text-[10px] font-medium text-gray-400 scale-90"
                             :class="{'text-jw-600 dark:text-jw-400': activeTerritory.expiration}">
                             <i class="far fa-calendar-alt text-lg"></i>
                             <span x-show="activeTerritory && activeTerritory.expiration"
@@ -589,7 +586,7 @@
                     if (!el || this.view !== 'dashboard') return;
                     if (this.sortableTerritories) this.sortableTerritories.destroy();
                     this.sortableTerritories = new Sortable(el.querySelector('.grid'), {
-                        draggable: '.group', animation: 150, ghostClass: 'sortable-ghost', delay: 500, delayOnTouchOnly: true, touchStartThreshold: 5, fallbackTolerance: 5,
+                        draggable: '.group', animation: 150, ghostClass: 'sortable-ghost', delay: 500, delayOnTouchOnly: true, touchStartThreshold: 5, fallbackTolerance: 5, forceFallback: true,
                         onEnd: (evt) => {
                             if (evt.oldIndex === undefined || evt.newIndex === undefined) return;
                             if (evt.oldIndex === evt.newIndex) return;
@@ -605,7 +602,7 @@
                     if (!el || this.view !== 'editor') return;
                     if (this.sortableAddresses) this.sortableAddresses.destroy();
                     this.sortableAddresses = new Sortable(el.querySelector('.space-y-4'), {
-                        draggable: '.group', animation: 150, ghostClass: 'sortable-ghost', delay: 500, delayOnTouchOnly: true, touchStartThreshold: 5, fallbackTolerance: 5,
+                        draggable: '.group', animation: 150, ghostClass: 'sortable-ghost', delay: 500, delayOnTouchOnly: true, touchStartThreshold: 5, fallbackTolerance: 5, forceFallback: true,
                         onEnd: (evt) => {
                             if (evt.oldIndex === undefined || evt.newIndex === undefined) return;
                             if (evt.oldIndex === evt.newIndex) return;
