@@ -586,7 +586,7 @@
                     if (!el || this.view !== 'dashboard') return;
                     if (this.sortableTerritories) this.sortableTerritories.destroy();
                     this.sortableTerritories = new Sortable(el.querySelector('.grid'), {
-                        draggable: '.group', animation: 150, ghostClass: 'sortable-ghost', delay: 500, delayOnTouchOnly: true, touchStartThreshold: 5, fallbackTolerance: 5, forceFallback: true,
+                        draggable: '.group', animation: 150, ghostClass: 'sortable-ghost', delay: 500, delayOnTouchOnly: true, touchStartThreshold: 5, fallbackTolerance: 5,
                         onEnd: (evt) => {
                             if (evt.oldIndex === undefined || evt.newIndex === undefined) return;
                             if (evt.oldIndex === evt.newIndex) return;
@@ -608,7 +608,7 @@
                     if (!el || this.view !== 'editor') return;
                     if (this.sortableAddresses) this.sortableAddresses.destroy();
                     this.sortableAddresses = new Sortable(el.querySelector('.space-y-4'), {
-                        draggable: '.group', animation: 150, ghostClass: 'sortable-ghost', delay: 500, delayOnTouchOnly: true, touchStartThreshold: 5, fallbackTolerance: 5, forceFallback: true,
+                        draggable: '.group', animation: 150, ghostClass: 'sortable-ghost', delay: 500, delayOnTouchOnly: true, touchStartThreshold: 5, fallbackTolerance: 5,
                         onEnd: (evt) => {
                             if (evt.oldIndex === undefined || evt.newIndex === undefined) return;
                             if (evt.oldIndex === evt.newIndex) return;
