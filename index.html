@@ -148,7 +148,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <template x-for="t in territories" :key="t ? t.id : Math.random()">
+                        <template x-for="t in territories" :key="t.id">
                             <div x-show="t"
                                 class="group active:scale-[0.98] bg-white dark:bg-gray-900 rounded-2xl p-4 border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-all cursor-pointer relative overflow-hidden flex flex-col gap-3 select-none touch-manipulation"
                                 style="-webkit-touch-callout: none;" @click="openTerritory(t.id)">
@@ -249,7 +249,7 @@
                     </div>
 
                     <!-- Footer -->
-                    <footer class="py-12 text-center text-gray-400 dark:text-gray-500 text-xs md:text-sm opacity-70">
+                    <footer class="py-12 text-center text-gray-400 dark:text-gray-400 text-xs md:text-sm opacity-70">
                         <p class="max-w-[85%] mx-auto leading-relaxed font-medium mb-6">
                             Client-side only: i dati sono salvati solo sul dispositivo.<br>
                             <span class="text-red-400/80 dark:text-red-900/50">Svuotando la cache del browser i dati
