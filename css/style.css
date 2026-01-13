@@ -1,0 +1,42 @@
+html.dark {
+    background-color: #030712;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-x: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+.sortable-ghost {
+    opacity: 0.4;
+    background: #dce2ed;
+}
+
+.dark .sortable-ghost {
+    background: #39496d;
+}
+
+[contenteditable]:empty:before {
+    content: attr(placeholder);
+    color: #9ca3af;
+    cursor: text;
+}
+
+[contenteditable]:focus {
+    outline: none;
+    border-bottom-color: #526ca2;
+}
