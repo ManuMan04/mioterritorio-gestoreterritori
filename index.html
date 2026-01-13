@@ -171,7 +171,7 @@
 
                                         <!-- Simple Info -->
                                         <div
-                                            class="flex items-center gap-2 text-[10px] text-gray-500 dark:text-gray-400 mt-1">
+                                            class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-1">
                                             <span class="flex items-center"><i
                                                     class="fas fa-map-pin mr-1 text-gray-400"></i> <strong
                                                     class="mr-1 text-gray-700 dark:text-gray-300"
@@ -191,24 +191,24 @@
                                             <!-- Hidden input strictly within container -->
                                             <input type="date" x-model="t.expiration"
                                                 class="absolute inset-0 opacity-0 w-full h-full z-10 cursor-pointer">
-                                            <div class="flex items-center gap-1 h-full px-2 text-[10px] font-medium text-gray-400"
+                                            <div class="flex items-center gap-1 h-full px-2 text-xs font-medium text-gray-400"
                                                 :class="{'text-jw-600 dark:text-jw-400': t.expiration}">
-                                                <i class="far fa-calendar-alt text-sm"></i>
+                                                <i class="far fa-calendar-alt text-base"></i>
                                                 <span x-show="t.expiration" x-text="formatDate(t.expiration)"></span>
                                             </div>
                                         </div>
 
                                         <!-- Delete (z-20 to sit above implicit layers) -->
                                         <button @click="confirmDelete('territory', t.id)"
-                                            class="w-8 h-8 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-300 hover:text-red-500 dark:hover:text-red-400 flex items-center justify-center transition-colors relative z-20">
-                                            <i class="fas fa-times"></i>
+                                            class="w-9 h-9 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-300 hover:text-red-500 dark:hover:text-red-400 flex items-center justify-center transition-colors relative z-20">
+                                            <i class="fas fa-times text-base"></i>
                                         </button>
                                     </div>
                                 </div>
 
                                 <!-- Progress Bar -->
-                                <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
-                                    <div class="h-1.5 flex-1 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                                    <div class="h-2 flex-1 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
                                         <div class="h-full bg-jw-600 dark:bg-jw-500 rounded-full"
                                             :style="`width: ${calculateStats(t).percent}%`"></div>
                                     </div>
@@ -218,7 +218,7 @@
 
                                 <!-- Detailed Stats (Removed top border) -->
                                 <div
-                                    class="flex items-center gap-3 text-[10px] pt-1 border-gray-50 dark:border-gray-800/50">
+                                    class="flex items-center gap-3 text-xs pt-1 border-gray-50 dark:border-gray-800/50">
                                     <div class="flex items-center text-green-600 dark:text-green-400">
                                         <i class="fas fa-check mr-1.5"></i>
                                         <span class="font-bold mr-1" x-text="calculateStats(t).green"></span>
@@ -249,8 +249,7 @@
                     </div>
 
                     <!-- Footer -->
-                    <footer
-                        class="py-12 text-center text-gray-400 dark:text-gray-500 text-[10px] md:text-xs opacity-70">
+                    <footer class="py-12 text-center text-gray-400 dark:text-gray-500 text-xs md:text-sm opacity-70">
                         <p class="max-w-[85%] mx-auto leading-relaxed font-medium mb-6">
                             Client-side only: i dati sono salvati solo sul dispositivo.<br>
                             <span class="text-red-400/80 dark:text-red-900/50">Svuotando la cache del browser i dati
@@ -258,7 +257,7 @@
                         </p>
                         <div class="flex justify-center">
                             <a href="https://github.com/ManuMan04/gestore-territori-jw" target="_blank"
-                                class="text-2xl hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+                                class="text-3xl hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
                                 <i class="fab fa-github"></i>
                             </a>
                         </div>
@@ -287,7 +286,7 @@
                             placeholder="Nome Territorio"></span>
                         <button @click="$refs.titleInput.focus()"
                             class="w-6 h-6 flex items-center justify-center text-gray-400 dark:text-gray-500 hover:text-jw-600 dark:hover:text-jw-400 transition-colors">
-                            <i class="fas fa-pen text-xs"></i>
+                            <i class="fas fa-pen text-sm"></i>
                         </button>
                     </div>
 
@@ -296,9 +295,9 @@
                         class="relative h-8 bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700 flex-shrink-0">
                         <input type="date" x-model="activeTerritory.expiration"
                             class="absolute inset-0 opacity-0 w-full h-full z-10 cursor-pointer">
-                        <div class="flex items-center gap-1 h-full px-2 text-[10px] font-medium text-gray-400 scale-90"
+                        <div class="flex items-center gap-1 h-full px-2 text-sm font-medium text-gray-400 scale-90"
                             :class="{'text-jw-600 dark:text-jw-400': activeTerritory.expiration}">
-                            <i class="far fa-calendar-alt text-lg"></i>
+                            <i class="far fa-calendar-alt text-xl"></i>
                             <span x-show="activeTerritory && activeTerritory.expiration"
                                 x-text="formatDateShort(activeTerritory?.expiration)"></span>
                         </div>
@@ -318,14 +317,14 @@
                         </div>
                         <div contenteditable="true" x-text="activeTerritory.notes || ''"
                             @blur="activeTerritory.notes = $el.innerText"
-                            class="min-h-[20px] text-sm text-gray-700 dark:text-gray-300 outline-none border-b border-gray-100 dark:border-gray-800 focus:border-jw-500 transition-colors py-1"
+                            class="min-h-[20px] text-base text-gray-700 dark:text-gray-300 outline-none border-b border-gray-100 dark:border-gray-800 focus:border-jw-500 transition-colors py-1"
                             placeholder="Scrivi qui..."></div>
                     </div>
 
                     <!-- Selection Mode Toggle (Visible only if there are addresses) -->
                     <div class="flex justify-end mb-4" x-show="activeTerritory.addresses.length > 0">
                         <button @click="toggleSelectionMode()"
-                            class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center gap-2 border shadow-sm"
+                            class="px-4 py-2 rounded-lg text-sm font-semibold transition-all flex items-center gap-2 border shadow-sm"
                             :class="selectionMode ? 'bg-jw-600 text-white border-jw-600 ring-2 ring-jw-200 dark:ring-jw-900' : 'bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800'">
                             <i class="fas fa-check-square"></i>
                             <span x-text="selectionMode ? 'Mod. Selezione Attiva' : 'Seleziona'"></span>
@@ -354,12 +353,12 @@
 
                                         <span contenteditable="true" x-text="addr.name"
                                             @blur="addr.name = $el.innerText" @keydown.enter.prevent="$el.blur()"
-                                            class="font-medium text-sm md:text-base text-gray-800 dark:text-gray-200 border-b border-transparent transition-colors px-1 py-1 max-w-[85%] break-words focus:bg-gray-50 dark:focus:bg-gray-800 rounded-t"
+                                            class="font-medium text-base md:text-lg text-gray-800 dark:text-gray-200 border-b border-transparent transition-colors px-1 py-1 max-w-[85%] break-words focus:bg-gray-50 dark:focus:bg-gray-800 rounded-t"
                                             placeholder="Nome Indirizzo"></span>
 
                                         <button @click="$el.previousElementSibling.focus()"
-                                            class="w-6 h-6 flex items-center justify-center text-gray-300 dark:text-gray-600 hover:text-jw-500 dark:hover:text-jw-400 transition-colors flex-shrink-0">
-                                            <i class="fas fa-pen text-[10px]"></i>
+                                            class="w-8 h-8 flex items-center justify-center text-gray-300 dark:text-gray-600 hover:text-jw-500 dark:hover:text-jw-400 transition-colors flex-shrink-0">
+                                            <i class="fas fa-pen text-xs"></i>
                                         </button>
                                     </div>
 
@@ -382,7 +381,7 @@
                                                     class="aspect-square rounded-xl flex items-center justify-center relative shadow-sm transition-all duration-200 cursor-pointer select-none active:scale-95"
                                                     :class="getUnitClasses(unit)">
                                                     <span
-                                                        class="text-xs md:text-sm font-semibold opacity-60 pointer-events-none"
+                                                        class="text-sm md:text-base font-semibold opacity-60 pointer-events-none"
                                                         x-text="uIdx + 1"></span>
                                                     <!-- Note Indicator (JW Blue) -->
                                                     <div x-show="unit.note"
@@ -591,9 +590,15 @@
                         onEnd: (evt) => {
                             if (evt.oldIndex === undefined || evt.newIndex === undefined) return;
                             if (evt.oldIndex === evt.newIndex) return;
-                            if (this.territories[evt.oldIndex] === undefined) return;
-                            const item = this.territories.splice(evt.oldIndex, 1)[0];
-                            this.territories.splice(evt.newIndex, 0, item);
+
+                            // MANUAL STATE SYNC: Create a copy, move item, assign back
+                            // This prevents Alpine from 'snapping back' because it sees a new array reference
+                            const newTerritories = [...this.territories];
+                            const item = newTerritories.splice(evt.oldIndex, 1)[0];
+                            newTerritories.splice(evt.newIndex, 0, item);
+
+                            // Prevent flash by clearing then resetting? No, assignment is enough
+                            this.territories = newTerritories;
                         }
                     });
                 },
@@ -607,9 +612,15 @@
                         onEnd: (evt) => {
                             if (evt.oldIndex === undefined || evt.newIndex === undefined) return;
                             if (evt.oldIndex === evt.newIndex) return;
-                            if (!this.activeTerritory || !this.activeTerritory.addresses || !this.activeTerritory.addresses[evt.oldIndex]) return;
-                            const item = this.activeTerritory.addresses.splice(evt.oldIndex, 1)[0];
-                            this.activeTerritory.addresses.splice(evt.newIndex, 0, item);
+
+                            if (!this.activeTerritory || !this.activeTerritory.addresses) return;
+
+                            // MANUAL STATE SYNC for Addresses
+                            const newAddresses = [...this.activeTerritory.addresses];
+                            const item = newAddresses.splice(evt.oldIndex, 1)[0];
+                            newAddresses.splice(evt.newIndex, 0, item);
+
+                            this.activeTerritory.addresses = newAddresses;
                         }
                     });
                 },
