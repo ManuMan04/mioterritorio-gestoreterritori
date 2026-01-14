@@ -6,11 +6,11 @@ function territoryApp() {
         activeTerritory: null,
         selectionMode: false,
         selectedUnits: [],
-        modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false },
+        modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false, colorPickerId: null },
         deleteState: { type: null, id: null, targetName: '' },
         sortableTerritories: null,
         sortableAddresses: null,
-        forms: { territoryName: '', addressName: '', addressUnits: '', noteText: '' },
+        forms: { territoryName: '', territoryColor: null, addressName: '', addressUnits: '', noteText: '' },
         currentEditingUnit: null,
         touchTimer: null,
         longPressTriggered: false,
@@ -127,10 +127,39 @@ function territoryApp() {
                 }
             });
         },
-        openNewTerritoryModal() { this.forms.territoryName = ''; this.modals.newTerritory = true; },
+        openNewTerritoryModal() {
+            this.forms.territoryName = '';
+            this.forms.territoryColor = null;
+            this.modals.newTerritory = true;
+        },
+        focusAtEnd(el) {
+            if (!el) return;
+            el.focus();
+            const range = document.createRange();
+            range.selectNodeContents(el);
+            range.collapse(false);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+        },
+
+        colorPalette: ['#a1305b', '#7858a4', '#6081b6', '#50a8b0', '#1f8d52', '#61c18d', '#b4c757', '#be7352', '#ac5655', '#895613'],
+
+        setTerritoryColor(t, color) {
+            t.color = color;
+            this.modals.colorPickerId = null; // Close picker after selection
+        },
+
         submitNewTerritory() {
             if (!this.forms.territoryName.trim()) return;
-            this.territories.push({ id: Date.now().toString(), name: this.forms.territoryName, notes: '', expiration: null, addresses: [] });
+            this.territories.push({
+                id: Date.now().toString(),
+                name: this.forms.territoryName,
+                notes: '',
+                expiration: null,
+                addresses: [],
+                color: this.forms.territoryColor
+            });
             this.modals.newTerritory = false;
         },
         openTerritory(id) {
@@ -220,6 +249,27 @@ function territoryApp() {
         openNoteModal(unit) { this.currentEditingUnit = unit; this.forms.noteText = unit.note || ''; this.modals.note = true; },
         closeNoteModal() { this.modals.note = false; this.currentEditingUnit = null; },
         saveNote() { if (this.currentEditingUnit) this.currentEditingUnit.note = this.forms.noteText; this.closeNoteModal(); },
+
+        calculateGlobalStats() {
+            let totalUnits = 0;
+            let completedUnits = 0;
+
+            this.territories.forEach(t => {
+                if (t.addresses) {
+                    t.addresses.forEach(a => {
+                        if (a.units) {
+                            totalUnits += a.units.length;
+                            completedUnits += a.units.filter(u => u.status !== 0).length;
+                        }
+                    });
+                }
+            });
+
+            const remaining = totalUnits - completedUnits;
+            const percent = totalUnits === 0 ? 0 : Math.round((completedUnits / totalUnits) * 100);
+
+            return { percent, remaining, total: totalUnits };
+        },
 
         calculateStats(t) {
             if (!t || !t.addresses || t.addresses.length === 0) return { percent: 0, green: 0, red: 0, neutral: 0 };

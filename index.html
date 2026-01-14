@@ -24,6 +24,14 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Icons & PWA -->
+    <link rel="icon" type="image/png" href="icons/icon-192.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#526ca2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 
 <body class="bg-gray-100 text-gray-900 dark:bg-gray-950 dark:text-gray-100 transition-colors duration-300 min-h-screen"
@@ -37,133 +45,169 @@
         <!-- DASHBOARD VIEW -->
         <template x-if="view === 'dashboard'">
             <div class="flex-1 flex flex-col h-full animate-fade-in relative z-0">
-                <!-- Header -->
+                <!-- Streamlined Header -->
                 <header
-                    class="px-6 py-5 flex justify-between items-center bg-white/90 dark:bg-gray-950/90 backdrop-blur-md sticky top-0 z-10 border-b border-gray-200 dark:border-gray-800 shadow-sm">
-                    <div>
-                        <h1 class="text-2xl font-bold text-jw-600 dark:text-jw-400">Territori</h1>
-                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5" x-text="getDateString()"></p>
-                    </div>
-                    <button @click="toggleTheme()"
-                        class="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:ring-2 hover:ring-gray-200 transition-all active:scale-95">
-                        <i class="fas" :class="isDark ? 'fa-sun' : 'fa-moon'"></i>
-                    </button>
-                </header>
-
-                <!-- Territory List -->
-                <div class="flex-1 overflow-y-auto p-4 md:p-6 no-scrollbar pb-10" id="territory-list"
-                    x-ref="territoryList">
-
-                    <div x-show="territories.length === 0" class="text-center py-8 text-gray-400">
-                        <p class="text-sm">Non hai ancora creato nessun territorio.</p>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <template x-for="t in territories" :key="t.id">
-                            <div x-show="t"
-                                class="group active:scale-[0.98] bg-white dark:bg-gray-900 rounded-2xl p-4 border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-all cursor-pointer relative overflow-hidden flex flex-col gap-3 select-none touch-manipulation"
-                                style="-webkit-touch-callout: none;" @click="openTerritory(t.id)">
-
-                                <!-- Top Row: Name + Actions -->
-                                <div class="flex items-start justify-between">
-                                    <div class="flex-1 min-w-0 pr-2">
-                                        <!-- Name Editable (FIXED FOCUS: Use previousElementSibling instead of refs) -->
-                                        <div
-                                            class="flex items-center justify-start flex-wrap gap-1 relative group/edit">
-                                            <span contenteditable="true" x-text="t.name" @blur="t.name = $el.innerText"
-                                                @click.stop @keydown.enter.prevent="$el.blur()"
-                                                class="font-bold text-lg text-gray-800 dark:text-white border-b border-transparent transition-colors px-0.5 py-0.5 max-w-full break-words focus:bg-gray-50 dark:focus:bg-gray-800 rounded-t"
-                                                placeholder="Nome Territorio"></span>
-                                            <button @click.stop="$el.previousElementSibling.focus()"
-                                                class="w-6 h-6 flex items-center justify-center text-gray-400 dark:text-gray-500 hover:text-jw-600 dark:hover:text-jw-400 transition-colors">
-                                                <i class="fas fa-pen text-[10px]"></i>
-                                            </button>
-                                        </div>
-
-                                        <!-- Simple Info -->
-                                        <div
-                                            class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                            <span class="flex items-center"><i
-                                                    class="fas fa-map-pin mr-1 text-gray-400"></i> <strong
-                                                    class="mr-1 text-gray-700 dark:text-gray-300"
-                                                    x-text="t.addresses ? t.addresses.length : 0"></strong>
-                                                Indirizzi</span>
-                                            <span class="flex items-center"><i class="fas fa-th mr-1 text-gray-400"></i>
-                                                <strong class="mr-1 text-gray-700 dark:text-gray-300"
-                                                    x-text="countTotalUnits(t)"></strong> Citofoni</span>
-                                        </div>
-                                    </div>
-
-                                    <!-- Top Right Actions: Expiration + Delete -->
-                                    <div class="flex items-center gap-1 flex-shrink-0" @click.stop>
-                                        <!-- Expiration Date (Native Picker Override) -->
-                                        <div
-                                            class="relative h-8 min-w-[32px] bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
-                                            <!-- Hidden input strictly within container -->
-                                            <input type="date" x-model="t.expiration"
-                                                class="absolute inset-0 opacity-0 w-full h-full z-10 cursor-pointer">
-                                            <div class="flex items-center gap-1 h-full px-2 text-xs font-medium text-gray-400"
-                                                :class="{'text-jw-600 dark:text-jw-400': t.expiration}">
-                                                <i class="far fa-calendar-alt text-base"></i>
-                                                <span x-show="t.expiration" x-text="formatDate(t.expiration)"></span>
-                                            </div>
-                                        </div>
-
-                                        <!-- Delete (z-20 to sit above implicit layers) -->
-                                        <button @click="confirmDelete('territory', t.id)"
-                                            class="w-9 h-9 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-300 hover:text-red-500 dark:hover:text-red-400 flex items-center justify-center transition-colors relative z-20">
-                                            <i class="fas fa-times text-base"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Progress Bar -->
-                                <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                                    <div class="h-2 flex-1 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
-                                        <div class="h-full bg-jw-600 dark:bg-jw-500 rounded-full"
-                                            :style="`width: ${calculateStats(t).percent}%`"></div>
-                                    </div>
-                                    <span class="font-medium text-jw-700 dark:text-jw-300"
-                                        x-text="calculateStats(t).percent + '%'"></span>
-                                </div>
-
-                                <!-- Detailed Stats (Removed top border) -->
-                                <div
-                                    class="flex items-center gap-3 text-xs pt-1 border-gray-50 dark:border-gray-800/50">
-                                    <div class="flex items-center text-green-600 dark:text-green-400">
-                                        <i class="fas fa-check mr-1.5"></i>
-                                        <span class="font-bold mr-1" x-text="calculateStats(t).green"></span>
-                                        <span x-text="calculateStats(t).green === 1 ? 'Fatto' : 'Fatti'"></span>
-                                    </div>
-                                    <div class="flex items-center text-red-500 dark:text-red-400">
-                                        <i class="fas fa-times mr-1.5"></i>
-                                        <span class="font-bold mr-1" x-text="calculateStats(t).red"></span>
-                                        <span x-text="calculateStats(t).red === 1 ? 'Assente' : 'Assenti'"></span>
-                                    </div>
-                                    <div class="flex items-center text-gray-400 dark:text-gray-500">
-                                        <i class="fas fa-circle mr-1.5"></i>
-                                        <span class="font-bold mr-1" x-text="calculateStats(t).neutral"></span>
-                                        <span
-                                            x-text="calculateStats(t).neutral === 1 ? 'Non visitato' : 'Non visitati'"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-
-                    <!-- Add Button Wrapper -->
-                    <div class="mt-8">
-                        <button @click="openNewTerritoryModal()"
-                            class="w-full py-4 rounded-xl bg-jw-600 text-white font-semibold shadow-lg shadow-jw-600/20 hover:bg-jw-700 active:scale-[0.99] transition-all flex items-center justify-center gap-2">
-                            <i class="fas fa-plus-circle"></i> Crea Nuovo Territorio
+                    class="px-4 py-4 bg-white dark:bg-gray-950 sticky top-0 z-20 border-b border-gray-100 dark:border-gray-900 shadow-sm">
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <p class="text-sm font-bold text-jw-600 dark:text-jw-400 capitalize"
+                                x-text="getDateString()"></p>
+                        </div>
+                        <button @click="toggleTheme()"
+                            class="w-8 h-8 rounded-full bg-gray-50 dark:bg-gray-900 flex items-center justify-center text-gray-600 dark:text-gray-300 transition-all active:scale-95 border border-gray-100 dark:border-gray-800">
+                            <i class="fas text-sm" :class="isDark ? 'fa-sun' : 'fa-moon'"></i>
                         </button>
                     </div>
 
+                    <!-- Subtle Global Progress -->
+                    <div class="flex flex-col gap-1">
+                        <div
+                            class="flex items-center justify-between text-[11px] font-bold text-gray-500 dark:text-gray-400">
+                            <span
+                                x-text="calculateGlobalStats().remaining > 0 ? `Mancano ${calculateGlobalStats().remaining} citofoni` : 'Tutto completato!'"></span>
+                            <span class="text-jw-600 dark:text-jw-400"
+                                x-text="calculateGlobalStats().percent + '%'"></span>
+                        </div>
+                        <div
+                            class="h-1.5 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden border border-gray-200/50 dark:border-gray-800">
+                            <div class="h-full bg-jw-600 dark:bg-jw-500 rounded-full transition-all duration-1000"
+                                :style="`width: ${calculateGlobalStats().percent}%`"></div>
+                        </div>
+                    </div>
+                </header>
+
+                <!-- Territory List -->
+                <div class="flex-1 overflow-y-auto no-scrollbar flex flex-col" id="territory-list"
+                    x-ref="territoryList">
+
+                    <div class="flex-1 p-4 md:p-6 pb-4">
+                        <div x-show="territories.length === 0" class="text-center py-8 text-gray-400">
+                            <p class="text-sm">Non hai ancora creato nessun territorio.</p>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <template x-for="t in territories" :key="t.id">
+                                <div x-show="t"
+                                    class="group active:scale-[0.98] bg-white dark:bg-gray-900 rounded-2xl p-4 border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-md transition-all cursor-pointer relative flex flex-col gap-2 select-none touch-manipulation"
+                                    :style="{ borderLeft: t.color ? '6px solid ' + t.color : '' }"
+                                    style="-webkit-touch-callout: none;" @click="openTerritory(t.id)">
+
+                                    <!-- Top Row: Name + Actions -->
+                                    <div class="flex items-start justify-between">
+                                        <div class="flex-1 min-w-0 pr-2">
+                                            <!-- Name Editable (FIXED FOCUS: Use previousElementSibling instead of refs) -->
+                                            <div
+                                                class="flex items-center justify-start flex-wrap gap-1 relative group/edit">
+                                                <span contenteditable="true" x-text="t.name"
+                                                    @blur="t.name = $el.innerText" @click.stop
+                                                    @keydown.enter.prevent="$el.blur()"
+                                                    class="font-bold text-lg text-gray-800 dark:text-white border-b border-transparent transition-colors px-0.5 py-0.5 max-w-full break-words focus:bg-gray-50 dark:focus:bg-gray-800 rounded-t"
+                                                    placeholder="Nome Territorio"></span>
+                                                <button @click.stop="focusAtEnd($el.previousElementSibling)"
+                                                    class="w-6 h-6 flex items-center justify-center text-gray-400 dark:text-gray-500 hover:text-jw-600 dark:hover:text-jw-400 transition-colors">
+                                                    <i class="fas fa-pen text-[10px]"></i>
+                                                </button>
+                                            </div>
+
+                                            <!-- Simple Info -->
+                                            <div
+                                                class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                                <span class="flex items-center"><i
+                                                        class="fas fa-map-pin mr-1 text-gray-400"></i> <strong
+                                                        class="mr-1 text-gray-700 dark:text-gray-300"
+                                                        x-text="t.addresses ? t.addresses.length : 0"></strong>
+                                                    Indirizzi</span>
+                                                <span class="flex items-center"><i
+                                                        class="fas fa-th mr-1 text-gray-400"></i>
+                                                    <strong class="mr-1 text-gray-700 dark:text-gray-300"
+                                                        x-text="countTotalUnits(t)"></strong> Citofoni</span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Top Right Actions: Expiration + Delete -->
+                                        <div class="flex items-center gap-1 flex-shrink-0" @click.stop>
+                                            <!-- Expiration Date (Native Picker Override) -->
+                                            <div
+                                                class="relative h-9 min-w-[36px] bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors border border-transparent hover:border-gray-200 dark:hover:border-gray-700">
+                                                <!-- Hidden input strictly within container -->
+                                                <input type="date" x-model="t.expiration"
+                                                    class="absolute inset-0 opacity-0 w-full h-full z-10 cursor-pointer">
+                                                <div class="flex items-center gap-1 h-full px-2 text-xs font-medium text-gray-400"
+                                                    :class="{'text-jw-600 dark:text-jw-400': t.expiration}">
+                                                    <i class="far fa-calendar-alt text-base"></i>
+                                                    <span x-show="t.expiration"
+                                                        x-text="formatDate(t.expiration)"></span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Delete (z-20 to sit above implicit layers) -->
+                                            <button @click="confirmDelete('territory', t.id)"
+                                                class="w-9 h-9 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 text-gray-300 hover:text-red-500 dark:hover:text-red-400 flex items-center justify-center transition-colors relative z-20">
+                                                <i class="fas fa-times text-base"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Progress Bar -->
+                                    <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                                        <div
+                                            class="h-2 flex-1 bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden">
+                                            <div class="h-full bg-jw-600 dark:bg-jw-500 rounded-full"
+                                                :style="`width: ${calculateStats(t).percent}%`"></div>
+                                        </div>
+                                        <span class="font-medium text-jw-700 dark:text-jw-300"
+                                            x-text="calculateStats(t).percent + '%'"></span>
+                                    </div>
+
+                                    <!-- Detailed Stats (Removed top border) -->
+                                    <div class="flex items-center justify-between pt-1">
+                                        <div
+                                            class="flex items-center gap-3 text-xs border-gray-200 dark:border-gray-800/50">
+                                            <div class="flex items-center text-green-600 dark:text-green-400">
+                                                <i class="fas fa-check mr-1.5"></i>
+                                                <span class="font-bold mr-1" x-text="calculateStats(t).green"></span>
+                                                <span x-text="calculateStats(t).green === 1 ? 'Fatto' : 'Fatti'"></span>
+                                            </div>
+                                            <div class="flex items-center text-red-500 dark:text-red-400">
+                                                <i class="fas fa-times mr-1.5"></i>
+                                                <span class="font-bold mr-1" x-text="calculateStats(t).red"></span>
+                                                <span
+                                                    x-text="calculateStats(t).red === 1 ? 'Assente' : 'Assenti'"></span>
+                                            </div>
+                                            <div class="flex items-center text-gray-400 dark:text-gray-500">
+                                                <i class="fas fa-circle mr-1.5"></i>
+                                                <span class="font-bold mr-1" x-text="calculateStats(t).neutral"></span>
+                                                <span
+                                                    x-text="calculateStats(t).neutral === 1 ? 'Non visitato' : 'Non visitati'"></span>
+                                            </div>
+                                        </div>
+
+                                        <!-- Palette Icon Button (Bottom Right) -->
+                                        <button @click.stop="modals.colorPickerId = t.id"
+                                            class="w-9 h-9 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-jw-600 dark:hover:text-jw-400 transition-all flex items-center justify-center">
+                                            <i class="fas fa-palette text-base" :style="{ color: t.color || '' }"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Add Button Wrapper -->
+                        <div class="mt-4">
+                            <button @click="openNewTerritoryModal()"
+                                class="w-full py-4 rounded-xl bg-jw-600 text-white font-semibold shadow-lg shadow-jw-600/20 hover:bg-jw-700 active:scale-[0.99] transition-all flex items-center justify-center gap-2">
+                                <i class="fas fa-plus-circle"></i> Crea Nuovo Territorio
+                            </button>
+                        </div>
+                    </div>
+
                     <!-- Footer -->
-                    <footer class="py-12 text-center text-gray-400 dark:text-gray-400 text-xs md:text-sm opacity-70">
-                        <p class="max-w-[85%] mx-auto leading-relaxed font-medium mb-6">
+                    <footer
+                        class="py-6 px-4 text-center text-gray-400 dark:text-gray-400 text-xs md:text-sm opacity-70 mt-auto">
+                        <p class="max-w-[85%] mx-auto leading-relaxed font-medium mb-3">
                             Client-side only: i dati sono salvati solo sul dispositivo.<br>
-                            <span class="text-red-400/80 dark:text-red-400">Svuotando la cache del browser i dati
+                            <span class="text-red-400/80 dark:text-red-400 font-semibold text-red-500">Svuotando la
+                                cache del browser i dati
                                 verranno persi.</span>
                         </p>
                         <div class="flex justify-center">
@@ -195,7 +239,7 @@
                             @blur="activeTerritory.name = $el.innerText" @keydown.enter.prevent="$el.blur()"
                             class="font-bold text-lg text-gray-900 dark:text-white border-b border-transparent transition-colors px-1 py-1 truncate focus:bg-gray-50 dark:focus:bg-gray-800 rounded-t"
                             placeholder="Nome Territorio"></span>
-                        <button @click="$refs.titleInput.focus()"
+                        <button @click="focusAtEnd($refs.titleInput)"
                             class="w-6 h-6 flex items-center justify-center text-gray-400 dark:text-gray-500 hover:text-jw-600 dark:hover:text-jw-400 transition-colors">
                             <i class="fas fa-pen text-sm"></i>
                         </button>
@@ -267,7 +311,7 @@
                                             class="font-medium text-base md:text-lg text-gray-800 dark:text-gray-200 border-b border-transparent transition-colors px-1 py-1 max-w-[85%] break-words focus:bg-gray-50 dark:focus:bg-gray-800 rounded-t"
                                             placeholder="Nome Indirizzo"></span>
 
-                                        <button @click="$el.previousElementSibling.focus()"
+                                        <button @click="focusAtEnd($el.previousElementSibling)"
                                             class="w-8 h-8 flex items-center justify-center text-gray-300 dark:text-gray-600 hover:text-jw-500 dark:hover:text-jw-400 transition-colors flex-shrink-0">
                                             <i class="fas fa-pen text-xs"></i>
                                         </button>
@@ -390,6 +434,24 @@
                 <input type="text" x-model="forms.territoryName"
                     class="w-full p-3 bg-gray-50 dark:bg-gray-800 border-none rounded-xl focus:ring-2 focus:ring-jw-500 text-gray-900 dark:text-white mb-4"
                     placeholder="Nome">
+
+                <div class="mb-4">
+                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 block">Colore
+                        Etichetta</label>
+                    <div class="grid grid-cols-5 gap-2">
+                        <template x-for="c in colorPalette" :key="c">
+                            <button @click="forms.territoryColor = c"
+                                class="w-full aspect-square rounded-full border-2 transition-all"
+                                :class="forms.territoryColor === c ? 'border-jw-600 scale-110 shadow-md' : 'border-transparent opacity-70 hover:opacity-100'"
+                                :style="{ backgroundColor: c }"></button>
+                        </template>
+                        <button @click="forms.territoryColor = null"
+                            class="w-full aspect-square rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400"
+                            :class="forms.territoryColor === null ? 'bg-gray-100 dark:bg-gray-800 border-jw-600' : 'bg-transparent'">
+                            <i class="fas fa-ban"></i>
+                        </button>
+                    </div>
+                </div>
                 <div class="flex justify-end gap-3">
                     <button @click="modals.newTerritory = false"
                         class="px-4 py-2 text-gray-500 dark:text-gray-400">Annulla</button>
@@ -438,10 +500,40 @@
             </div>
         </div>
 
+        <!-- Color Picker Modal (Applied to existing territory) -->
+        <div x-show="modals.colorPickerId" x-cloak class="fixed inset-0 z-[80] flex items-center justify-center p-4">
+            <div @click="modals.colorPickerId = null" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+            <div class="bg-white dark:bg-gray-900 rounded-2xl p-6 w-full max-w-sm relative shadow-2xl animate-fade-in">
+                <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">Seleziona Colore</h3>
+
+                <div class="grid grid-cols-5 gap-3 mb-6">
+                    <template x-for="c in colorPalette" :key="c">
+                        <button @click="setTerritoryColor(territories.find(t => t.id === modals.colorPickerId), c)"
+                            class="w-full aspect-square rounded-full border-2 border-black/5 hover:scale-110 active:scale-95 transition-transform"
+                            :style="{ backgroundColor: c }"></button>
+                    </template>
+                    <button @click="setTerritoryColor(territories.find(t => t.id === modals.colorPickerId), null)"
+                        class="w-full aspect-square rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400 bg-gray-50 dark:bg-gray-800">
+                        <i class="fas fa-ban"></i>
+                    </button>
+                </div>
+
+                <div class="flex justify-end">
+                    <button @click="modals.colorPickerId = null"
+                        class="px-6 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-bold rounded-xl">Chiudi</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Logic -->
     <script src="js/app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
 </body>
 
 </html>
