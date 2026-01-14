@@ -44,10 +44,10 @@
 
         <!-- DASHBOARD VIEW -->
         <template x-if="view === 'dashboard'">
-            <div class="flex-1 flex flex-col h-full animate-fade-in relative z-0">
+            <div class="flex-1 flex flex-col h-full bg-gray-100 dark:bg-gray-950 animate-fade-in relative z-0">
                 <!-- Streamlined but Complete Header -->
                 <header
-                    class="px-6 py-5 bg-white dark:bg-gray-950 sticky top-0 z-20 border-b border-gray-100 dark:border-gray-900 shadow-sm">
+                    class="px-6 py-5 bg-white dark:bg-gray-900 sticky top-0 z-20 border-b border-gray-100 dark:border-gray-900 shadow-sm">
                     <div class="flex justify-between items-start mb-1">
                         <div>
                             <h1 class="text-2xl font-bold text-jw-600 dark:text-jw-400">Territori</h1>
@@ -186,28 +186,127 @@
                         </div>
                     </div>
 
-                    <!-- Footer -->
+                    <!-- New Defined Footer -->
                     <footer
-                        class="py-6 px-4 text-center text-gray-400 dark:text-gray-400 text-xs md:text-sm opacity-70 mt-auto">
-                        <p class="max-w-[85%] mx-auto leading-relaxed font-medium mb-3">
-                            Client-side only: i dati sono salvati solo sul dispositivo.<br>
-                            <span class="text-red-400/80 dark:text-red-400 font-semibold text-red-500">Svuotando la
-                                cache del browser i dati
-                                verranno persi.</span>
-                        </p>
-                        <div class="flex justify-center gap-6">
-                            <a href="https://github.com/ManuMan04/gestore-territori-jw" target="_blank"
-                                class="text-3xl hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
-                                <i class="fab fa-github"></i>
-                            </a>
-                            <a href="#" target="_blank"
-                                class="text-3xl hover:text-amber-500 dark:hover:text-amber-400 transition-colors"
-                                title="Offrimi un caffè">
-                                <i class="fas fa-coffee"></i>
-                            </a>
-                        </div>
+                        class="py-6 px-6 text-center mt-auto border-t border-gray-100 dark:border-gray-900 bg-white dark:bg-gray-900">
+                        <button @click="openInfo()"
+                            class="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-gray-50 dark:bg-gray-900 text-gray-500 dark:text-gray-400 text-sm font-semibold hover:bg-gray-100 dark:hover:bg-gray-800 transition-all border border-gray-100 dark:border-gray-800">
+                            <i class="fas fa-info-circle text-jw-600 dark:text-jw-400"></i>
+                            Informazioni sul progetto
+                        </button>
                     </footer>
 
+                </div>
+            </div>
+        </template>
+
+        <!-- INFO & PRIVACY VIEW -->
+        <template x-if="view === 'info'">
+            <div class="flex-1 flex flex-col h-full bg-gray-100 dark:bg-gray-950 animate-fade-in relative z-0">
+                <!-- Header -->
+                <header
+                    class="px-4 py-4 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-900 flex items-center gap-3 sticky top-0 z-20">
+                    <button @click="goBack()"
+                        class="w-10 h-10 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900 flex items-center justify-center text-gray-600 dark:text-gray-300 transition-colors">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Informazioni</h2>
+                </header>
+
+                <div class="flex-1 overflow-y-auto p-6 space-y-6 no-scrollbar pb-10">
+                    <div class="space-y-6">
+                        <!-- Open Source -->
+                        <div class="flex gap-4">
+                            <div
+                                class="flex-shrink-0 w-10 h-10 rounded-full bg-jw-50 dark:bg-jw-900/20 text-jw-600 dark:text-jw-400 flex items-center justify-center">
+                                <i class="fas fa-code text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 dark:text-white text-sm">Progetto Open Source</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-xs leading-relaxed mt-1">
+                                    Disponibile su <a href="https://github.com/ManuMan04/gestore-territori-jw"
+                                        target="_blank" class="underline hover:text-jw-600">GitHub</a>, progettato con
+                                    amore da e per i fratelli.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Responsibility -->
+                        <div class="flex gap-4">
+                            <div
+                                class="flex-shrink-0 w-10 h-10 rounded-full bg-jw-50 dark:bg-jw-900/20 text-jw-600 dark:text-jw-400 flex items-center justify-center">
+                                <i class="fas fa-exclamation-circle text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 dark:text-white text-sm">Responsabilità Personale
+                                </h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-xs leading-relaxed mt-1">
+                                    L'utente è l'unico responsabile dei dati inseriti. È fondamentale attenersi alle
+                                    direttive dell'organizzazione su <strong>quali</strong> informazioni è appropriato
+                                    acquisire e registrare durante il ministero.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Technical Security -->
+                        <div class="flex gap-4">
+                            <div
+                                class="flex-shrink-0 w-10 h-10 rounded-full bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 flex items-center justify-center">
+                                <i class="fas fa-user-shield text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 dark:text-white text-sm">Sicurezza e Normative</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-xs leading-relaxed mt-1">
+                                    L'app è conforme alle vigenti normative sulla privacy poiché i dati restano solo
+                                    sul tuo browser. La sicurezza "fisica" delle informazioni dipende però
+                                    esclusivamente dalla protezione del tuo dispositivo personale.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Vision -->
+                        <div class="flex gap-4">
+                            <div
+                                class="flex-shrink-0 w-10 h-10 rounded-full bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 flex items-center justify-center">
+                                <i class="fas fa-hands-helping text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 dark:text-white text-sm">Aiuto per il Ministero</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-xs leading-relaxed mt-1 italic">
+                                    "Gratuitamente avete ricevuto, gratuitamente date" (Matteo 10:8). L'app nasce per
+                                    supportare chiunque nel ministero di campo.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Donations -->
+                        <div class="flex gap-4">
+                            <div
+                                class="flex-shrink-0 w-10 h-10 rounded-full bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 flex items-center justify-center">
+                                <i class="fas fa-heart text-sm"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 dark:text-white text-sm">Donazioni</h4>
+                                <p class="text-gray-500 dark:text-gray-400 text-xs leading-relaxed mt-1">
+                                    Le donazioni coprono i costi di gestione. Ogni eccedenza sarà donata interamente per
+                                    sostenere l'opera mondiale dei Testimoni di Geova.
+                                </p>
+                                <a href="#" target="_blank"
+                                    class="inline-block mt-3 px-4 py-2 bg-rose-500 text-white text-[10px] font-bold rounded-lg shadow-lg shadow-rose-500/20 uppercase tracking-wider">
+                                    Supporta il progetto
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Disclaimer Bar -->
+                    <div
+                        class="p-4 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 text-[10px] text-gray-500 dark:text-gray-500 leading-relaxed">
+                        <p class="font-bold uppercase mb-1 opacity-60">Disclaimer Legale</p>
+                        Questo strumento non è associato, autorizzato né sponsorizzato dalla <span
+                            class="text-gray-700 dark:text-gray-300 font-bold">The Watchtower Bible and Tract Society of
+                            Pennsylvania</span> o dalle sue sussidiarie legali.
+                    </div>
                 </div>
             </div>
         </template>
@@ -405,9 +504,11 @@
                     class="w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 text-red-500 flex items-center justify-center mb-4 mx-auto text-xl">
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
-                <h3 class="text-lg font-bold mb-2 text-center text-gray-900 dark:text-white">Conferma Eliminazione</h3>
-                <p class="text-center text-gray-500 dark:text-gray-400 text-sm mb-6">Sei sicuro di voler eliminare <span
-                        x-text="deleteState.targetName"></span>?</p>
+                <h3 class="text-lg font-bold mb-2 text-center text-gray-900 dark:text-white">Conferma Eliminazione
+                </h3>
+                <p class="text-center text-gray-500 dark:text-gray-400 text-sm mb-6">Sei sicuro di voler eliminare
+                    <span x-text="deleteState.targetName"></span>?
+                </p>
                 <div class="flex gap-3">
                     <button @click="modals.deleteConfirm = false"
                         class="flex-1 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-800">Annulla</button>

@@ -172,6 +172,9 @@ function territoryApp() {
             this.view = 'dashboard';
             this.selectionMode = false;
         },
+        openInfo() {
+            this.view = 'info';
+        },
 
         confirmDelete(type, id) {
             this.deleteState.type = type; this.deleteState.id = id;
