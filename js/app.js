@@ -40,7 +40,7 @@ function territoryApp() {
         handleSwipeStart(e) { this.touchStartX = e.changedTouches[0].screenX; },
         handleSwipeEnd(e) {
             const diffX = e.changedTouches[0].screenX - this.touchStartX;
-            if (diffX > 100 && this.view === 'editor') this.goBack();
+            if (diffX > 100 && (this.view === 'editor' || this.view === 'info')) this.goBack();
         },
 
         toggleTheme() { this.isDark = !this.isDark; },
