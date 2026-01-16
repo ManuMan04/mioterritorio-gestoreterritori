@@ -80,8 +80,8 @@ function territoryApp() {
                     // --- UPDATE ALPINE STATE ---
                     const currentList = Alpine.raw(this.territories);
                     const newList = [...currentList];
-                    const [movedItem] = newList.splice(oldIndex, 1);
-                    newList.splice(newIndex, 0, movedItem);
+                    const [movedItem] = newList.splice(evt.oldDraggableIndex, 1);
+                    newList.splice(evt.newDraggableIndex, 0, movedItem);
 
                     // This will trigger Alpine's reactivity and render the list in the correct order
                     this.territories = newList;
@@ -119,8 +119,8 @@ function territoryApp() {
                     const currentList = Alpine.raw(this.activeTerritory.addresses);
                     const newList = [...currentList];
 
-                    const [movedItem] = newList.splice(oldIndex, 1);
-                    newList.splice(newIndex, 0, movedItem);
+                    const [movedItem] = newList.splice(evt.oldDraggableIndex, 1);
+                    newList.splice(evt.newDraggableIndex, 0, movedItem);
 
                     this.activeTerritory.addresses = newList;
 
