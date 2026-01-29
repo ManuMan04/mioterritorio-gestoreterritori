@@ -1,5 +1,5 @@
 html.dark {
-    background-color: #030712;
+    background-color: #0a0a0a;
 }
 
 body {
@@ -39,4 +39,31 @@ body {
 [contenteditable]:focus {
     outline: none;
     border-bottom-color: #526ca2;
+}
+
+/* Custom Scrollbar for Advanced Mode */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #334155;
+}
+
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+    background: #5b3c88;
+    /* jw-600 */
+}
+
+.dark .custom-scrollbar:hover::-webkit-scrollbar-thumb {
+    background: #5b3c88;
 }

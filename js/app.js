@@ -8,13 +8,14 @@ function territoryApp() {
         selectedUnits: [],
         modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false, colorPickerId: null },
         deleteState: { type: null, id: null, targetName: '' },
-        sortableTerritories: null,
-        sortableAddresses: null,
-        forms: { territoryName: '', territoryColor: null, addressName: '', addressUnits: '', noteText: '' },
+        forms: { territoryName: '', territoryColor: null, addressName: '', addressUnits: '', addressRows: '', addressCols: '', addressCreationMode: 'simple', customCols: [], noteText: '' },
         currentEditingUnit: null,
         touchTimer: null,
         longPressTriggered: false,
         touchStartX: 0,
+        isUpdatingAddresses: false,
+        searchQuery: '',
+        filterType: 'all', // all, in_progress, completed, expired
 
         initApp() {
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -31,10 +32,8 @@ function territoryApp() {
                 document.documentElement.classList.toggle('dark', val);
             });
             this.$watch('view', (val) => {
-                if (val === 'dashboard') this.$nextTick(() => this.initSortableTerritories());
-                else if (val === 'editor') this.$nextTick(() => this.initSortableAddresses());
+                // View change logic if needed
             });
-            this.$nextTick(() => this.initSortableTerritories());
         },
 
         handleSwipeStart(e) { this.touchStartX = e.changedTouches[0].screenX; },
@@ -47,86 +46,12 @@ function territoryApp() {
         getDateString() { return new Date().toLocaleDateString('it-IT', { weekday: 'long', month: 'long', day: 'numeric' }); },
         formatDate(dateStr) { if (!dateStr) return ''; return new Date(dateStr).toLocaleDateString('it-IT'); },
         formatDateShort(dateStr) { if (!dateStr) return ''; return new Date(dateStr).toLocaleDateString('it-IT'); },
-        initSortableTerritories() {
-            const el = document.getElementById('territory-list');
-
-            if (!el || this.view !== 'dashboard') return;
-            if (this.sortableTerritories) this.sortableTerritories.destroy();
-
-            const grid = el.querySelector('.grid');
-            if (!grid) return;
-
-            this.sortableTerritories = new Sortable(grid, {
-                draggable: '.group', animation: 150, ghostClass: 'sortable-ghost', delay: 200, delayOnTouchOnly: true, touchStartThreshold: 3, fallbackTolerance: 3,
-                onEnd: (evt) => {
-                    const oldIndex = evt.oldIndex;
-                    const newIndex = evt.newIndex;
-
-
-                    if (oldIndex === undefined || newIndex === undefined || oldIndex === newIndex) return;
-
-                    // --- REVERT DOM MOVE ---
-                    // This is crucial: we undo Sortable's manual DOM movement 
-                    // and let AlpineJS re-render the list based on the new state.
-                    const parent = evt.from;
-                    const item = evt.item;
-                    // Move the DOM element back to its original position
-                    if (newIndex > oldIndex) {
-                        parent.insertBefore(item, parent.children[oldIndex]);
-                    } else {
-                        parent.insertBefore(item, parent.children[oldIndex + 1] || null);
-                    }
-
-                    // --- UPDATE ALPINE STATE ---
-                    const currentList = Alpine.raw(this.territories);
-                    const newList = [...currentList];
-                    const [movedItem] = newList.splice(evt.oldDraggableIndex, 1);
-                    newList.splice(evt.newDraggableIndex, 0, movedItem);
-
-                    // This will trigger Alpine's reactivity and render the list in the correct order
-                    this.territories = newList;
-
-                }
-            });
+        formatDateTime(dateStr) {
+            if (!dateStr) return '';
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('it-IT') + ' ' + d.toLocaleTimeString('it-IT', { hour: '2-digit', minute: '2-digit' });
         },
 
-        initSortableAddresses() {
-            const el = document.getElementById('address-list');
-
-            if (!el || this.view !== 'editor') return;
-            if (this.sortableAddresses) this.sortableAddresses.destroy();
-
-            const list = el.querySelector('.space-y-4') || el; // Support both cases
-            this.sortableAddresses = new Sortable(list, {
-                draggable: '.group', animation: 150, ghostClass: 'sortable-ghost', delay: 200, delayOnTouchOnly: true, touchStartThreshold: 3, fallbackTolerance: 3,
-                onEnd: (evt) => {
-                    const oldIndex = evt.oldIndex;
-                    const newIndex = evt.newIndex;
-
-
-                    if (oldIndex === undefined || newIndex === undefined || oldIndex === newIndex) return;
-                    if (!this.activeTerritory || !this.activeTerritory.addresses) return;
-
-                    // Revert DOM move for address list too
-                    const parent = evt.from;
-                    const item = evt.item;
-                    if (newIndex > oldIndex) {
-                        parent.insertBefore(item, parent.children[oldIndex]);
-                    } else {
-                        parent.insertBefore(item, parent.children[oldIndex + 1] || null);
-                    }
-
-                    const currentList = Alpine.raw(this.activeTerritory.addresses);
-                    const newList = [...currentList];
-
-                    const [movedItem] = newList.splice(evt.oldDraggableIndex, 1);
-                    newList.splice(evt.newDraggableIndex, 0, movedItem);
-
-                    this.activeTerritory.addresses = newList;
-
-                }
-            });
-        },
         openNewTerritoryModal() {
             this.forms.territoryName = '';
             this.forms.territoryColor = null;
@@ -151,15 +76,16 @@ function territoryApp() {
         },
 
         submitNewTerritory() {
-            if (!this.forms.territoryName.trim()) return;
-            this.territories.push({
-                id: Date.now().toString(),
+            if (!this.forms.territoryName) return;
+            const newT = {
+                id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
                 name: this.forms.territoryName,
+                color: this.forms.territoryColor,
+                expiration: '',
                 notes: '',
-                expiration: null,
-                addresses: [],
-                color: this.forms.territoryColor
-            });
+                addresses: []
+            };
+            this.territories.push(newT);
             this.modals.newTerritory = false;
         },
         openTerritory(id) {
@@ -193,13 +119,53 @@ function territoryApp() {
             }
             this.modals.deleteConfirm = false;
         },
-        openNewAddressModal() { this.forms.addressName = ''; this.forms.addressUnits = ''; this.modals.newAddress = true; },
+        openNewAddressModal() {
+            this.forms.addressName = '';
+            this.forms.addressUnits = '';
+            this.forms.addressRows = '';
+            this.forms.addressCols = '';
+            this.forms.addressCreationMode = 'simple';
+            this.forms.customCols = [];
+            this.modals.newAddress = true;
+        },
         submitNewAddress() {
-            if (!this.forms.addressName.trim()) return;
-            const count = parseInt(this.forms.addressUnits) || 0;
+            if (!this.forms.addressName) return;
+
+            let count = 0;
+            let cols = null;
+            let columnsLayout = null;
+
+            if (this.forms.addressCreationMode === 'simple') {
+                count = parseInt(this.forms.addressUnits) || 0;
+            } else if (this.forms.addressCreationMode === 'grid') {
+                const r = parseInt(this.forms.addressRows) || 0;
+                const c = parseInt(this.forms.addressCols) || 0;
+                count = r * c;
+                cols = c;
+            } else if (this.forms.addressCreationMode === 'custom') {
+                columnsLayout = this.forms.customCols.map(val => parseInt(val) || 0);
+                count = columnsLayout.reduce((acc, val) => acc + val, 0);
+                cols = columnsLayout.length;
+            }
+
             const units = Array.from({ length: count }, () => ({ id: Date.now() + Math.random().toString(), status: 0, note: '' }));
-            this.activeTerritory.addresses.push({ id: Date.now().toString(), name: this.forms.addressName, units: units });
+            this.activeTerritory.addresses.push({
+                id: Date.now().toString() + Math.random().toString(36).substr(2, 5),
+                name: this.forms.addressName,
+                units: units,
+                cols: cols,
+                columnsLayout: columnsLayout
+            });
             this.modals.newAddress = false;
+        },
+        getUnitsForColumn(addr, colIndex) {
+            if (!addr.columnsLayout) return [];
+            let start = 0;
+            for (let i = 0; i < colIndex; i++) {
+                start += addr.columnsLayout[i];
+            }
+            const count = addr.columnsLayout[colIndex];
+            return addr.units.slice(start, start + count).map((u, i) => ({ ...u, globalIndex: start + i }));
         },
         createUnitObject() { return { id: Date.now() + Math.random().toString(), status: 0, note: '' }; },
         addUnit(addressId) {
@@ -210,13 +176,14 @@ function territoryApp() {
 
         isSelected(unitId) { return this.selectedUnits.includes(unitId); },
 
-        handleUnitClick(unit) {
+        handleUnitClick(unit, addr) {
             if (this.longPressTriggered) { this.longPressTriggered = false; return; }
             if (this.selectionMode) {
                 if (this.isSelected(unit.id)) this.selectedUnits = this.selectedUnits.filter(id => id !== unit.id);
                 else this.selectedUnits.push(unit.id);
             } else {
                 if (unit.status === 0) unit.status = 1; else if (unit.status === 1) unit.status = 2; else unit.status = 0;
+                if (addr) addr.lastInteraction = new Date().toISOString();
             }
         },
         getUnitClasses(unit) {
@@ -240,18 +207,28 @@ function territoryApp() {
             });
             this.selectedUnits = []; this.selectionMode = false;
         },
-        handleTouchStart(unit, e) {
+        handleTouchStart(unit, addr, e) {
             if (this.selectionMode) return;
             this.longPressTriggered = false;
             this.touchTimer = setTimeout(() => {
                 this.longPressTriggered = true; if (navigator.vibrate) navigator.vibrate(50);
-                this.openNoteModal(unit);
+                this.openNoteModal(unit, addr);
             }, 500);
         },
         handleTouchEnd(e) { clearTimeout(this.touchTimer); },
-        openNoteModal(unit) { this.currentEditingUnit = unit; this.forms.noteText = unit.note || ''; this.modals.note = true; },
+        openNoteModal(unit, addr) {
+            this.currentEditingUnit = { unit, addr };
+            this.forms.noteText = unit.note || '';
+            this.modals.note = true;
+        },
         closeNoteModal() { this.modals.note = false; this.currentEditingUnit = null; },
-        saveNote() { if (this.currentEditingUnit) this.currentEditingUnit.note = this.forms.noteText; this.closeNoteModal(); },
+        saveNote() {
+            if (this.currentEditingUnit) {
+                this.currentEditingUnit.unit.note = this.forms.noteText;
+                this.currentEditingUnit.addr.lastInteraction = new Date().toISOString();
+            }
+            this.closeNoteModal();
+        },
 
         calculateGlobalStats() {
             let totalUnits = 0;
@@ -285,11 +262,38 @@ function territoryApp() {
                 }
             });
             const percent = total === 0 ? 0 : Math.round(((green + red) / total) * 100);
-            return { percent, green, red, neutral: total - green - red };
+            return { percent, green, red, neutral: total - green - red, total };
         },
         countTotalUnits(t) {
             if (!t || !t.addresses) return 0;
             return t.addresses.reduce((acc, a) => acc + (a && a.units ? a.units.length : 0), 0);
+        },
+        getFilteredTerritories() {
+            return this.territories.filter(t => {
+                // Search filter
+                const matchesSearch = t.name.toLowerCase().includes(this.searchQuery.toLowerCase());
+                if (!matchesSearch) return false;
+
+                // Status filter
+                const stats = this.calculateStats(t);
+                const isCompleted = stats.percent === 100 && stats.total > 0;
+                const isInProgress = stats.percent > 0 && stats.percent < 100;
+
+                // Expiration check
+                let isExpired = false;
+                if (t.expiration) {
+                    const expDate = new Date(t.expiration);
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    isExpired = expDate < today;
+                }
+
+                if (this.filterType === 'in_progress') return isInProgress;
+                if (this.filterType === 'completed') return isCompleted;
+                if (this.filterType === 'expired') return isExpired;
+
+                return true;
+            });
         }
     }
 }
