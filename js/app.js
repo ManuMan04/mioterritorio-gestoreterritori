@@ -86,6 +86,7 @@ function territoryApp() {
                 addresses: []
             };
             this.territories.push(newT);
+            this.filterType = 'all';
             this.modals.newTerritory = false;
         },
         openTerritory(id) {
