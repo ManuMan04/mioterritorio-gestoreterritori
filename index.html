@@ -181,18 +181,6 @@
                                                             x-text="formatDate(t.expiration)"></span>
                                                     </div>
                                                 </div>
-                                                <!-- Clear Date Button -->
-                                                <button x-show="t.expiration" @click.stop="t.expiration = ''"
-                                                    class="absolute -right-1.5 -top-1.5 w-4 h-4 bg-white dark:bg-gray-800 rounded-full border border-gray-200 dark:border-gray-700 flex items-center justify-center text-[8px] text-gray-400 hover:text-red-500 z-20 shadow-sm opacity-0 group-hover/cal:opacity-100 transition-opacity">
-                                                    <i class="fas fa-times"></i>
-                                                </button>
-                                                <!-- Mobile always visible clear if set -->
-                                                <div x-show="t.expiration" class="md:hidden">
-                                                    <button @click.stop="t.expiration = ''"
-                                                        class="ml-1 text-gray-400 hover:text-red-500 text-xs p-1 relative z-20">
-                                                        <i class="fas fa-times"></i>
-                                                    </button>
-                                                </div>
                                             </div>
 
                                             <!-- Delete (z-20 to sit above implicit layers) -->
@@ -410,11 +398,6 @@
                                 x-text="formatDateShort(activeTerritory?.expiration)"></span>
                         </div>
                     </div>
-                    <!-- Clear Date Button -->
-                    <button x-show="activeTerritory.expiration" @click.stop="activeTerritory.expiration = ''"
-                        class="ml-1 w-6 h-6 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors relative z-20">
-                        <i class="fas fa-times-circle text-sm"></i>
-                    </button>
                 </div>
 
                 <button @click="toggleTheme()"
