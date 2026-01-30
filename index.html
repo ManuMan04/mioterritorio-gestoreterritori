@@ -81,11 +81,11 @@
                         <!-- Search Bar with Border -->
                         <div class="relative group">
                             <div
-                                class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400 group-focus-within:text-jw-600 dark:group-focus-within:text-jw-600 transition-colors">
+                                class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400 group-focus-within:text-jw-600 dark:group-focus-within:text-jw-600 transition-colors">
                                 <i class="fas fa-search text-xs"></i>
                             </div>
                             <input type="text" x-model="searchQuery" placeholder="Cerca tra i tuoi territori..."
-                                class="w-full pl-10 pr-10 py-2.5 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-jw-600/50 focus:ring-4 focus:ring-jw-600/5 dark:focus:bg-gray-800 rounded-xl outline-none transition-all text-sm text-gray-800 dark:text-gray-200 shadow-sm">
+                                class="w-full pl-8 pr-10 py-2.5 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 focus:border-jw-600/50 focus:ring-4 focus:ring-jw-600/5 dark:focus:bg-gray-800 rounded-xl outline-none transition-all text-sm text-gray-800 dark:text-gray-200 shadow-sm">
                             <!-- Clear Button -->
                             <div x-show="searchQuery" class="absolute inset-y-0 right-0 pr-3 flex items-center">
                                 <button @click="searchQuery = ''"
@@ -227,7 +227,7 @@
 
                                         <!-- Palette Icon Button (Bottom Right) -->
                                         <button @click.stop="modals.colorPickerId = t.id"
-                                            class="w-9 h-9 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-jw-600 dark:hover:text-jw-400 transition-all flex items-center justify-center">
+                                            class="w-9 h-9 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-400 hover:text-jw-600 dark:hover:text-jw-400 transition-all flex items-center justify-center relative z-20">
                                             <i class="fas fa-palette text-base" :style="{ color: t.color || '' }"></i>
                                         </button>
                                     </div>
@@ -603,6 +603,34 @@
         </template>
 
         <!-- MODALS -->
+        <!-- Color Picker Modal (Applied to existing territory) -->
+        <div x-show="modals.colorPickerId !== null" x-cloak
+            class="fixed inset-0 z-[80] flex items-center justify-center p-4">
+            <div @click="modals.colorPickerId = null" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+            <div
+                class="bg-white dark:bg-gray-900 rounded-2xl p-6 w-full max-w-sm relative shadow-2xl animate-slide-up border border-gray-100 dark:border-gray-800">
+
+                <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">Seleziona Colore</h3>
+
+                <div class="grid grid-cols-5 gap-3 mb-6">
+                    <template x-for="c in colorPalette" :key="c">
+                        <button @click="setTerritoryColor(territories.find(t => t.id === modals.colorPickerId), c)"
+                            class="w-full aspect-square rounded-full border-2 border-black/5 hover:scale-110 active:scale-95 transition-transform"
+                            :style="{ backgroundColor: c }"></button>
+                    </template>
+                    <button @click="setTerritoryColor(territories.find(t => t.id === modals.colorPickerId), null)"
+                        class="w-full aspect-square rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400 bg-gray-50 dark:bg-gray-800">
+                        <i class="fas fa-ban"></i>
+                    </button>
+                </div>
+
+                <div class="flex justify-end">
+                    <button @click="modals.colorPickerId = null"
+                        class="px-6 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-bold rounded-xl active:scale-95 transition-all">Chiudi</button>
+                </div>
+            </div>
+        </div>
+
         <div x-show="modals.deleteConfirm" x-cloak class="fixed inset-0 z-[70] flex items-center justify-center p-4">
             <div @click="modals.deleteConfirm = false" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             <div
@@ -818,33 +846,7 @@
                 </div>
             </div>
 
-            <!-- Color Picker Modal (Applied to existing territory) -->
-            <div x-show="modals.colorPickerId" x-cloak
-                class="fixed inset-0 z-[80] flex items-center justify-center p-4">
-                <div @click="modals.colorPickerId = null" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-                <div
-                    class="bg-white dark:bg-gray-900 rounded-2xl p-6 w-full max-w-sm relative shadow-2xl animate-fade-in">
 
-                    <h3 class="text-lg font-bold mb-4 text-gray-900 dark:text-white">Seleziona Colore</h3>
-
-                    <div class="grid grid-cols-5 gap-3 mb-6">
-                        <template x-for="c in colorPalette" :key="c">
-                            <button @click="setTerritoryColor(territories.find(t => t.id === modals.colorPickerId), c)"
-                                class="w-full aspect-square rounded-full border-2 border-black/5 hover:scale-110 active:scale-95 transition-transform"
-                                :style="{ backgroundColor: c }"></button>
-                        </template>
-                        <button @click="setTerritoryColor(territories.find(t => t.id === modals.colorPickerId), null)"
-                            class="w-full aspect-square rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400 bg-gray-50 dark:bg-gray-800">
-                            <i class="fas fa-ban"></i>
-                        </button>
-                    </div>
-
-                    <div class="flex justify-end">
-                        <button @click="modals.colorPickerId = null"
-                            class="px-6 py-2.5 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 font-bold rounded-xl">Chiudi</button>
-                    </div>
-                </div>
-            </div>
 
         </div>
 
