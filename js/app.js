@@ -115,7 +115,20 @@ function territoryApp() {
             if (type === 'territory') this.territories = this.territories.filter(t => t.id !== id);
             else if (type === 'address') this.activeTerritory.addresses = this.activeTerritory.addresses.filter(a => a.id !== id);
             else if (type === 'units') {
-                this.activeTerritory.addresses.forEach(a => a.units = a.units.filter(u => !this.selectedUnits.includes(u.id)));
+                this.activeTerritory.addresses.forEach(a => {
+                    if (a.columnsLayout) {
+                        let currentStart = 0;
+                        const newLayout = [...a.columnsLayout];
+                        a.columnsLayout.forEach((count, colIdx) => {
+                            const colUnits = a.units.slice(currentStart, currentStart + count);
+                            const removedInThisCol = colUnits.filter(u => this.selectedUnits.includes(u.id)).length;
+                            newLayout[colIdx] -= removedInThisCol;
+                            currentStart += count;
+                        });
+                        a.columnsLayout = newLayout;
+                    }
+                    a.units = a.units.filter(u => !this.selectedUnits.includes(u.id));
+                });
                 this.selectedUnits = []; this.selectionMode = false;
             }
             this.modals.deleteConfirm = false;
@@ -171,7 +184,12 @@ function territoryApp() {
         createUnitObject() { return { id: Date.now() + Math.random().toString(), status: 0, note: '' }; },
         addUnit(addressId) {
             const addr = this.activeTerritory.addresses.find(a => a.id === addressId);
-            if (addr) addr.units.push(this.createUnitObject());
+            if (addr) {
+                addr.units.push(this.createUnitObject());
+                if (addr.columnsLayout && addr.columnsLayout.length > 0) {
+                    addr.columnsLayout[addr.columnsLayout.length - 1]++;
+                }
+            }
         },
         toggleSelectionMode() { this.selectionMode = !this.selectionMode; this.selectedUnits = []; },
 
