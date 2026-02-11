@@ -480,9 +480,9 @@
                                                 <div @click="handleUnitClick(unit, addr)"
                                                     @touchstart="handleTouchStart(unit, addr, $event)"
                                                     @touchend="handleTouchEnd($event)"
-                                                    @touchmove="handleTouchEnd($event)"
-                                                    @touchcancel="handleTouchEnd($event)" @contextmenu.prevent
-                                                    style="-webkit-touch-callout: none;"
+                                                    @touchcancel="handleTouchEnd($event)"
+                                                    @contextmenu.prevent="handleNoteLongPress(unit, addr, $event)"
+                                                    style="-webkit-touch-callout: none; -webkit-user-select: none; user-select: none;"
                                                     class="aspect-square rounded-xl flex items-center justify-center relative shadow-sm transition-all duration-200 cursor-pointer select-none active:scale-95"
                                                     :class="getUnitClasses(unit)">
                                                     <span
@@ -512,9 +512,9 @@
                                                         <div @click="handleUnitClick(unit, addr)"
                                                             @touchstart="handleTouchStart(unit, addr, $event)"
                                                             @touchend="handleTouchEnd($event)"
-                                                            @touchmove="handleTouchEnd($event)"
-                                                            @touchcancel="handleTouchEnd($event)" @contextmenu.prevent
-                                                            style="-webkit-touch-callout: none;"
+                                                            @touchcancel="handleTouchEnd($event)"
+                                                            @contextmenu.prevent="handleNoteLongPress(unit, addr, $event)"
+                                                            style="-webkit-touch-callout: none; -webkit-user-select: none; user-select: none;"
                                                             class="aspect-square rounded-xl flex items-center justify-center relative shadow-sm transition-all duration-200 cursor-pointer select-none active:scale-95"
                                                             :class="getUnitClasses(unit)">
                                                             <span

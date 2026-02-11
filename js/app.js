@@ -229,12 +229,23 @@ function territoryApp() {
         handleTouchStart(unit, addr, e) {
             if (this.selectionMode) return;
             this.longPressTriggered = false;
+            clearTimeout(this.touchTimer);
             this.touchTimer = setTimeout(() => {
-                this.longPressTriggered = true; if (navigator.vibrate) navigator.vibrate(50);
+                this.longPressTriggered = true;
+                if (navigator.vibrate) {
+                    try { navigator.vibrate(50); } catch (err) { }
+                }
                 this.openNoteModal(unit, addr);
-            }, 500);
+            }, 600);
         },
-        handleTouchEnd(e) { clearTimeout(this.touchTimer); },
+        handleTouchEnd(e) {
+            clearTimeout(this.touchTimer);
+        },
+        handleNoteLongPress(unit, addr, e) {
+            if (this.selectionMode) return;
+            this.longPressTriggered = true;
+            this.openNoteModal(unit, addr);
+        },
         openNoteModal(unit, addr) {
             this.currentEditingUnit = { unit, addr };
             this.forms.noteText = unit.note || '';
