@@ -11,9 +11,9 @@ tailwind.config = {
                     100: '#f5f1fa',
                     200: '#ebe4f4',
                     300: '#dbcdeb',
-                    400: '#c1a7e2', // Requested purple 1
+                    400: '#c1a7e2',
                     500: '#9e81c6',
-                    600: '#5b3c88', // Requested purple 2 (Base Color)
+                    600: '#5b3c88',
                     700: '#4a3070',
                     800: '#3a2658',
                     900: '#2a1b40',
@@ -29,8 +29,8 @@ tailwind.config = {
                     600: '#525252',
                     700: '#404040',
                     800: '#262626',
-                    900: '#171717', // Neutral Surface
-                    950: '#0a0a0a', // Deep Neutral BG
+                    900: '#171717',
+                    950: '#0a0a0a',
                 }
             },
             animation: {

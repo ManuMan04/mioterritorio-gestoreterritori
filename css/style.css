@@ -2,12 +2,14 @@ html.dark {
     background-color: #0a0a0a;
 }
 
+/* Base Styles */
 body {
     font-family: 'Inter', sans-serif;
     -webkit-tap-highlight-color: transparent;
     overscroll-behavior-x: none;
 }
 
+/* Scrollbar Utilities */
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }
@@ -17,10 +19,12 @@ body {
     scrollbar-width: none;
 }
 
+/* Utilities */
 [x-cloak] {
     display: none !important;
 }
 
+/* SortableJS Styles */
 .sortable-ghost {
     opacity: 0.4;
     background: #dce2ed;
@@ -30,6 +34,7 @@ body {
     background: #39496d;
 }
 
+/* Content Editable Placeholders */
 [contenteditable]:empty:before {
     content: attr(placeholder);
     color: #9ca3af;
@@ -41,7 +46,7 @@ body {
     border-bottom-color: #526ca2;
 }
 
-/* Custom Scrollbar for Advanced Mode */
+/* Custom Scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
     width: 4px;
 }
@@ -61,7 +66,6 @@ body {
 
 .custom-scrollbar:hover::-webkit-scrollbar-thumb {
     background: #5b3c88;
-    /* jw-600 */
 }
 
 .dark .custom-scrollbar:hover::-webkit-scrollbar-thumb {

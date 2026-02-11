@@ -15,13 +15,13 @@ function territoryApp() {
         touchStartX: 0,
         isUpdatingAddresses: false,
         searchQuery: '',
-        filterType: 'all', // all, in_progress, completed, expired
+        filterType: 'all',
 
         initApp() {
             if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 this.isDark = true;
             }
-            // Apply dark class to html element for Tailwind classes to work
+            // Apply dark class to html element
             document.documentElement.classList.toggle('dark', this.isDark);
 
             const stored = localStorage.getItem('territories');
@@ -32,7 +32,7 @@ function territoryApp() {
                 document.documentElement.classList.toggle('dark', val);
             });
             this.$watch('view', (val) => {
-                // View change logic if needed
+                // Helper for infinite scroll or similar
             });
         },
 
@@ -72,7 +72,7 @@ function territoryApp() {
 
         setTerritoryColor(t, color) {
             t.color = color;
-            this.modals.colorPickerId = null; // Close picker after selection
+            this.modals.colorPickerId = null; // Close picker
         },
 
         submitNewTerritory() {
@@ -289,16 +289,14 @@ function territoryApp() {
         },
         getFilteredTerritories() {
             return this.territories.filter(t => {
-                // Search filter
+                // Filter logic
                 const matchesSearch = t.name.toLowerCase().includes(this.searchQuery.toLowerCase());
                 if (!matchesSearch) return false;
 
-                // Status filter
                 const stats = this.calculateStats(t);
                 const isCompleted = stats.percent === 100 && stats.total > 0;
                 const isInProgress = stats.percent > 0 && stats.percent < 100;
 
-                // Expiration check
                 let isExpired = false;
                 if (t.expiration) {
                     const expDate = new Date(t.expiration);
