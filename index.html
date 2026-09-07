@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1, user-scalable=no">
     <title>MioTerritorio</title>
 
     <!-- Tailwind CSS (Local) -->
@@ -132,8 +132,8 @@
                             
                             <!-- 3D Map Illustration (Dark & Light) -->
                             <div class="w-full flex items-center justify-center my-2">
-                                <img x-show="isDark" src="img/empty_map_dark.png" alt="Nessun territorio" class="w-80 sm:w-96 max-h-56 object-contain pointer-events-none select-none">
-                                <img x-show="!isDark" src="img/empty_map_light.png" alt="Nessun territorio" class="w-80 sm:w-96 max-h-56 object-contain pointer-events-none select-none">
+                                <img x-show="isDark" src="img/empty_map_dark.png" alt="Nessun territorio" class="w-64 sm:w-80 max-h-48 object-contain object-top pointer-events-none select-none">
+                                <img x-show="!isDark" src="img/empty_map_light.png" alt="Nessun territorio" class="w-64 sm:w-80 max-h-48 object-contain object-top pointer-events-none select-none">
                             </div>
 
                             <!-- Text Message -->
@@ -850,7 +850,7 @@
 
                         <!-- Responsibility Card -->
                         <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 flex gap-4">
-                            <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-jw-50 dark:bg-[#1f1530] text-jw-600 dark:text-jw-400 flex items-center justify-center text-lg">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-rose-50 dark:bg-rose-950/50 text-rose-600 dark:text-rose-400 flex items-center justify-center text-lg">
                                 <i class="fas fa-exclamation-circle"></i>
                             </div>
                             <div class="min-w-0 flex-1">
@@ -865,7 +865,7 @@
 
                         <!-- Ministry Card -->
                         <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 shadow-xs border border-slate-200/80 dark:border-slate-800/80 flex gap-4">
-                            <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-amber-50 dark:bg-[#2e1d0d] text-amber-600 dark:text-amber-400 flex items-center justify-center text-lg">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-2xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-lg">
                                 <i class="fas fa-hands-helping"></i>
                             </div>
                             <div class="min-w-0 flex-1">
@@ -1114,20 +1114,20 @@
                                                     style="-webkit-touch-callout: none; -webkit-user-select: none; user-select: none;"
                                                     class="aspect-square rounded-2xl flex items-center justify-center relative shadow-xs transition-all duration-200 cursor-pointer select-none active:scale-95"
                                                     :class="getUnitClasses(unit)">
-                                                    <span x-show="!unit.isHole" class="text-base sm:text-lg font-black opacity-90 pointer-events-none"
+                                                    <span x-show="!unit.isHole" class="text-base font-extrabold opacity-90 pointer-events-none"
                                                         x-text="getActiveUnitNumber(addr, unit.id, uIdx)"></span>
                                                     
                                                     <!-- Status Badges -->
-                                                    <div x-show="unit.status === 1" class="absolute -top-1 -right-1 w-4.5 h-4.5 rounded-full bg-emerald-500 text-white text-[10px] font-bold flex items-center justify-center shadow-xs">
+                                                    <div x-show="unit.status === 1" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center shadow-xs">
                                                         <i class="fas fa-check"></i>
                                                     </div>
-                                                    <div x-show="unit.status === 2" class="absolute -top-1 -right-1 w-4.5 h-4.5 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center shadow-xs">
+                                                    <div x-show="unit.status === 2" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center shadow-xs">
                                                         <i class="fas fa-times"></i>
                                                     </div>
                                                     
                                                     <!-- Note Indicator -->
                                                     <div x-show="unit.note && unit.status === 0"
-                                                        class="absolute top-1.5 right-1.5 w-3 h-3 bg-jw-600 rounded-full ring-2 ring-white dark:ring-slate-800">
+                                                        class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-jw-600 rounded-full ring-2 ring-white dark:ring-slate-800">
                                                     </div>
                                                 </div>
                                             </template>
@@ -1155,20 +1155,20 @@
                                                             style="-webkit-touch-callout: none; -webkit-user-select: none; user-select: none;"
                                                             class="aspect-square rounded-2xl flex items-center justify-center relative shadow-xs transition-all duration-200 cursor-pointer select-none active:scale-95"
                                                             :class="getUnitClasses(unit)">
-                                                            <span x-show="!unit.isHole" class="text-base sm:text-lg font-black opacity-90 pointer-events-none"
+                                                            <span x-show="!unit.isHole" class="text-base font-extrabold opacity-90 pointer-events-none"
                                                                 x-text="getActiveUnitNumber(addr, unit.id, unit.globalIndex)"></span>
                                                             
                                                             <!-- Status Badges -->
-                                                            <div x-show="unit.status === 1" class="absolute -top-1 -right-1 w-4.5 h-4.5 rounded-full bg-emerald-500 text-white text-[10px] font-bold flex items-center justify-center shadow-xs">
+                                                            <div x-show="unit.status === 1" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center shadow-xs">
                                                                 <i class="fas fa-check"></i>
                                                             </div>
-                                                            <div x-show="unit.status === 2" class="absolute -top-1 -right-1 w-4.5 h-4.5 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center shadow-xs">
+                                                            <div x-show="unit.status === 2" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-bold flex items-center justify-center shadow-xs">
                                                                 <i class="fas fa-times"></i>
                                                             </div>
 
                                                             <!-- Note Indicator -->
                                                             <div x-show="unit.note && unit.status === 0"
-                                                                class="absolute top-1.5 right-1.5 w-3 h-3 bg-jw-600 rounded-full ring-2 ring-white dark:ring-slate-800">
+                                                                class="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-jw-600 rounded-full ring-2 ring-white dark:ring-slate-800">
                                                             </div>
                                                         </div>
                                                     </template>
@@ -1282,7 +1282,7 @@
 
         <!-- Modals -->
         <!-- Color Picker -->
-        <div x-show="modals.colorPickerId !== null" x-cloak
+        <div x-show="modals.colorPickerId !== null" x-cloak data-modal
             class="fixed inset-0 z-[80] flex items-center justify-center p-4">
             <div @click="modals.colorPickerId = null" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             <div
@@ -1309,7 +1309,7 @@
             </div>
         </div>
 
-        <div x-show="modals.deleteConfirm" x-cloak class="fixed inset-0 z-[70] flex items-center justify-center p-4">
+        <div x-show="modals.deleteConfirm" x-cloak data-modal class="fixed inset-0 z-[70] flex items-center justify-center p-4">
             <div @click="modals.deleteConfirm = false" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             <div
                 class="bg-white dark:bg-[#0d1424] rounded-3xl p-6 w-full max-w-sm relative shadow-xl animate-slide-down border border-slate-200/80 dark:border-slate-800/80">
@@ -1332,7 +1332,7 @@
             </div>
         </div>
 
-        <div x-show="modals.newTerritory" x-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div x-show="modals.newTerritory" x-cloak data-modal class="fixed inset-0 z-[60] flex items-center justify-center p-4">
             <div @click="modals.newTerritory = false" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             <div
                 class="bg-white dark:bg-[#0d1424] rounded-3xl p-6 w-full max-w-sm relative shadow-2xl animate-slide-up border border-slate-200/80 dark:border-slate-800/80">
@@ -1371,7 +1371,7 @@
             </div>
         </div>
 
-        <div x-show="modals.newAddress" x-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div x-show="modals.newAddress" x-cloak data-modal class="fixed inset-0 z-[60] flex items-center justify-center p-4">
             <div @click="modals.newAddress = false" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             <div
                 class="bg-white dark:bg-[#0d1424] rounded-3xl p-6 w-full max-w-sm relative shadow-2xl animate-slide-up border border-slate-200/80 dark:border-slate-800/80">
@@ -1509,7 +1509,7 @@
             </div>
         </div>
 
-        <div x-show="modals.note" x-cloak class="fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div x-show="modals.note" x-cloak data-modal class="fixed inset-0 z-[60] flex items-center justify-center p-4">
             <div @click="closeNoteModal()" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
             <div
                 class="bg-white dark:bg-[#0d1424] rounded-3xl p-6 w-full max-w-sm relative shadow-2xl border border-slate-200/80 dark:border-slate-800/80">
@@ -1534,7 +1534,7 @@
         </div>
 
         <!-- Introductory Onboarding Modal -->
-        <div x-show="modals.tutorial" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div x-show="modals.tutorial" x-cloak data-modal class="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <!-- Backdrop with blur -->
             <div @click="finishTutorial()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-md transition-opacity"></div>
 
@@ -1772,7 +1772,7 @@
         </div>
 
         <!-- Tutorial Completion Modal -->
-        <div x-show="modals.tutorialComplete" x-cloak class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div x-show="modals.tutorialComplete" x-cloak data-modal class="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <!-- Backdrop with blur -->
             <div @click="finishTutorial()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-md transition-opacity"></div>
 
@@ -1815,7 +1815,7 @@
         </div>
 
         <!-- PWA Installation Guide Modal (Modern Apple/PWA Tutorial Walkthrough) -->
-        <div x-show="modals.pwaGuide" x-cloak class="fixed inset-0 z-[110] flex items-center justify-center p-4">
+        <div x-show="modals.pwaGuide" x-cloak data-modal class="fixed inset-0 z-[110] flex items-center justify-center p-4">
             <!-- Backdrop -->
             <div @click="closePwaGuide()" class="absolute inset-0 bg-slate-900/70 backdrop-blur-md transition-opacity"></div>
 
@@ -1927,7 +1927,7 @@
         </div>
 
         <!-- Reset / Format Data Confirmation Modal -->
-        <div x-show="modals.resetConfirm" x-cloak class="fixed inset-0 z-[120] flex items-center justify-center p-4">
+        <div x-show="modals.resetConfirm" x-cloak data-modal class="fixed inset-0 z-[120] flex items-center justify-center p-4">
             <div @click="modals.resetConfirm = false" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"></div>
             <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-6 w-full max-w-sm relative shadow-2xl animate-scale-up border border-slate-200/80 dark:border-slate-800/80 flex flex-col gap-4 text-center">
                 
@@ -1956,7 +1956,7 @@
         </div>
 
         <!-- Simplified Filter & Sort Modal -->
-        <div x-show="modals.filterModal" x-cloak class="fixed inset-0 z-[120] flex items-center justify-center p-4">
+        <div x-show="modals.filterModal" x-cloak data-modal class="fixed inset-0 z-[120] flex items-center justify-center p-4">
             <div @click="closeFilterModal()" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"></div>
             <div class="bg-white dark:bg-[#0d1424] rounded-3xl p-5 sm:p-6 w-full max-w-sm relative shadow-2xl animate-scale-up border border-slate-200/80 dark:border-slate-800/80 flex flex-col gap-4">
                 
@@ -2082,6 +2082,12 @@
     <!-- Logic -->
     <script src="js/app.js"></script>
     <script>
+        // Safari needs gesture listeners in addition to the viewport and touch-action rules.
+        ['gesturestart', 'gesturechange', 'gestureend'].forEach((eventName) => {
+            document.addEventListener(eventName, (event) => event.preventDefault(), { passive: false });
+        });
+        document.addEventListener('dblclick', (event) => event.preventDefault(), { passive: false });
+
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js').then((reg) => {
                 // Check for updates on startup

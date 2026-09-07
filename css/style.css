@@ -25,13 +25,27 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    touch-action: pan-y;
+    /* Keep native scrolling while stopping pinch and double-tap zoom in the PWA. */
+    touch-action: manipulation;
     background-color: #f8fafc;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     -webkit-tap-highlight-color: transparent;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overscroll-behavior: none;
+}
+
+/* Modals are read outdoors too: keep their copy and actions comfortably legible. */
+[data-modal] .text-xs {
+    font-size: 0.875rem !important;
+    line-height: 1.35rem !important;
+}
+
+[data-modal] .text-\[10px\],
+[data-modal] .text-\[11px\],
+[data-modal] .text-\[9px\] {
+    font-size: 0.75rem !important;
+    line-height: 1.15rem !important;
 }
 
 img {
