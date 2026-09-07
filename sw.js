@@ -1,4 +1,4 @@
-const CACHE_NAME = 'territori-cache-v36';
+const CACHE_NAME = 'territori-cache-v37';
 const ASSETS = [
     './',
     'index.html',

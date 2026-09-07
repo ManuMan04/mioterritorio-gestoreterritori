@@ -675,22 +675,10 @@ function territoryApp() {
                 addr.name = newName.trim();
             }
         },
-        deleteCurrentEditingUnit() {
-            if (this.currentEditingUnit && this.currentEditingUnit.addr && this.currentEditingUnit.unit) {
-                const { addr, unit } = this.currentEditingUnit;
-                if (addr.columnsLayout) {
-                    let currentStart = 0;
-                    const newLayout = [...addr.columnsLayout];
-                    addr.columnsLayout.forEach((count, colIdx) => {
-                        const colUnits = addr.units.slice(currentStart, currentStart + count);
-                        if (colUnits.some(u => u.id === unit.id)) {
-                            newLayout[colIdx] = Math.max(0, newLayout[colIdx] - 1);
-                        }
-                        currentStart += count;
-                    });
-                    addr.columnsLayout = newLayout;
-                }
-                addr.units = addr.units.filter(u => u.id !== unit.id);
+        deleteCurrentEditingNote() {
+            if (this.currentEditingUnit) {
+                this.currentEditingUnit.unit.note = '';
+                this.currentEditingUnit.addr.lastInteraction = new Date().toISOString();
             }
             this.closeNoteModal();
         },
