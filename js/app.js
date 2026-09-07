@@ -1044,7 +1044,12 @@ function territoryApp() {
         },
         getRecentActivities() {
             if (!this.territories || this.territories.length === 0) return [];
-            return this.territories.slice(0, 5);
+            return this.territories
+                .flatMap((territory) => (territory.addresses || [])
+                    .filter((address) => address.lastInteraction)
+                    .map((address) => ({ territory, address })))
+                .sort((a, b) => new Date(b.address.lastInteraction) - new Date(a.address.lastInteraction))
+                .slice(0, 5);
         },
         getFilteredTerritories() {
             return this.territories.filter(t => {
