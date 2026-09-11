@@ -6,7 +6,7 @@ function territoryApp() {
         activeTerritory: null,
         selectionMode: false,
         selectedUnits: [],
-        modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false, colorPickerId: null, tutorial: false, tutorialComplete: false, pwaGuide: false, resetConfirm: false, filterModal: false },
+        modals: { newTerritory: false, newAddress: false, note: false, deleteConfirm: false, colorPickerId: null, tutorial: !localStorage.getItem('tutorialSeen'), tutorialComplete: false, pwaGuide: false, resetConfirm: false, filterModal: false },
         filters: { status: 'all', sortBy: 'name_asc', minUnits: 0, maxUnits: 100, hasNotesOnly: false, selectedColor: null },
         deleteState: { type: null, id: null, targetName: '' },
         forms: { territoryName: '', territoryColor: null, addressName: '', addressUnits: '', addressRows: '', addressCols: '', addressCreationMode: 'simple', customCols: [], noteText: '' },
@@ -72,12 +72,8 @@ function territoryApp() {
                 // Helper for infinite scroll or similar
             });
 
-            // Trigger intro modal on first visit
-            if (!localStorage.getItem('tutorialSeen')) {
-                this.$nextTick(() => {
-                    this.openIntroModal();
-                });
-            }
+            // Tutorial modal is initialized synchronously at data-definition time
+            // (modals.tutorial = !localStorage.getItem('tutorialSeen')) so no delayed call needed here.
         },
 
         openIntroModal() {

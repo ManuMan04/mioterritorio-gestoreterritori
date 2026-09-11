@@ -203,21 +203,25 @@ img {
 }
 
 /* ─── Status Badge Icon Perfect Centering ─────────────────────────────────── */
-/* Ensures check and X icons inside the small w-4 h-4 intercom circles        */
-/* are always perfectly centered, regardless of FA icon bounding-box quirks.  */
+/* Ensures check and X icons inside intercom status circles are always         */
+/* perfectly centered. FA icons have invisible bounding-box padding that       */
+/* breaks naive flex centering – we compensate with explicit sizing.           */
 .unit-badge {
-    display: inline-flex;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 0 !important;
+}
+.unit-badge > i,
+.unit-badge > .fas,
+.unit-badge > .far {
+    font-size: 9px;
+    line-height: 0;
+    display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 1;
-}
-.unit-badge i {
-    display: block;
-    line-height: 1;
-    font-size: 9px;
-    position: relative;
-    top: 0;
-    left: 0;
+    width: 9px;
+    height: 9px;
 }
 
 /* ─── Tutorial / Modal larger text for outdoor readability ───────────────── */
