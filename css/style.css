@@ -201,3 +201,32 @@ img {
 .animate-color-cycle {
     animation: colorCycle 4s linear infinite;
 }
+
+/* ─── Status Badge Icon Perfect Centering ─────────────────────────────────── */
+/* Ensures check and X icons inside the small w-4 h-4 intercom circles        */
+/* are always perfectly centered, regardless of FA icon bounding-box quirks.  */
+.unit-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+.unit-badge i {
+    display: block;
+    line-height: 1;
+    font-size: 9px;
+    position: relative;
+    top: 0;
+    left: 0;
+}
+
+/* ─── Tutorial / Modal larger text for outdoor readability ───────────────── */
+/* Boosts the smallest text inside modals so it stays legible in sunlight.    */
+[data-modal] p,
+[data-modal] span,
+[data-modal] li {
+    font-size: 0.875rem;
+}
+[data-modal] h3 {
+    font-size: 1.25rem;
+}

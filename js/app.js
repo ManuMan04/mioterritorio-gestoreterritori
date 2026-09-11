@@ -74,9 +74,9 @@ function territoryApp() {
 
             // Trigger intro modal on first visit
             if (!localStorage.getItem('tutorialSeen')) {
-                setTimeout(() => {
+                this.$nextTick(() => {
                     this.openIntroModal();
-                }, 400);
+                });
             }
         },
 
